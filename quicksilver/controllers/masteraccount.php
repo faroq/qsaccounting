@@ -54,6 +54,29 @@ class masteraccount extends CI_Controller {
         
     }
     
+    public function delete_row() {
+        $opt = isset($_POST['cmd']) ? $this->db->escape_str($this->input->post('cmd', TRUE)) : '';
+//        $data = isset($_POST['postdata']) ? $this->db->escape_str($this->input->post('postdata', TRUE)) : '';
+        $data = isset($_POST['postdata']) ? json_decode($this->input->post('postdata', TRUE)): array(); 
+//        $data='{"rekening":"1110.10","nama_rekening":"kas cbb (rupiah)"}';
+//        $datain = json_decode($data);
+        $rekening=$data->rekening;
+        $namarekening=' ';
+        $kelompok=' ';
+        $jenis=' ';
+        
+        $param=array($opt,$rekening,$namarekening,$kelompok,$jenis);
+        $spname='sp_mstaccount';
+        $result = $this->macc_model->SP_execData($spname, $param, true);
+//        $json = array(
+//                    "success" => true,
+//                    "msg" => $rekening
+//                );
+//        $result= json_encode($json);
+        echo $result;
+        
+    }
+    
 
 
 }
