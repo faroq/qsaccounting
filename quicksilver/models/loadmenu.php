@@ -22,7 +22,6 @@ class loadmenu extends CI_Model {
         $db =$this->load->database('default', TRUE);
         $sql = 'call getRoleMenu("1")';
         $result = $db->query($sql);
-
         return $result;
     }
 
