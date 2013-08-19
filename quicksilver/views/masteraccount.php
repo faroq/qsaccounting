@@ -10,7 +10,7 @@ if (!defined('BASEPATH'))
         autoSync	: false,
         storeId		: 'mMasterAccountStore',
         fields: [ 
-            'rekening','nama_rekening','default','nama_kelompok','nama_jenis'
+            'rekening','nama_rekening','default','nama_kelompok','nama_jenis','kelompok','jenis'
         ],
         proxy		: {
             type: 'ajax',
@@ -181,6 +181,7 @@ if (!defined('BASEPATH'))
                 {
                     xtype: 'combo',
                     tooltip: 'Field tidak boleh kosong',
+                    afterLabelTextTpl: required_css,
                     fieldLabel: 'Jenis Rekening',                        
                     id: 'macc_jenis',
                     store: JenisAccountStore,
@@ -207,6 +208,7 @@ if (!defined('BASEPATH'))
                 {
                     xtype: 'combo',                        
                     tooltip: 'Field tidak boleh kosong',
+                    afterLabelTextTpl: required_css,
                     fieldLabel: 'Kelompok',                        
                     id: 'macc_kelompok',
                     store: KelompokAccountStore,
@@ -231,12 +233,14 @@ if (!defined('BASEPATH'))
                     name: 'rekening',
                     id: 'macc_rekening',
                     tooltip: 'Field tidak boleh kosong',
+                    afterLabelTextTpl: required_css,
                     fieldLabel: 'Rekening'                        
                 }
                 ,{
                     name: 'nama_rekening',
                     id: 'macc_namarekening',
                     tooltip: 'Field tidak boleh kosong',
+                    afterLabelTextTpl: required_css,
                     fieldLabel: 'Nama Rekening'                        
                 }                    
             ];
@@ -261,23 +265,23 @@ if (!defined('BASEPATH'))
             this.callParent(arguments);
         },
         submit: function(){
-        var parcmd=Ext.getCmp('btn_macc_simpan').getText();
-        if(parcmd === 'Simpan'){
-            parcmd='insert';
-        }else if(parcmd === 'Edit'){
-            parcmd='update';
-        }
+            var parcmd=Ext.getCmp('btn_macc_simpan').getText();
+            if(parcmd === 'Simpan'){
+                parcmd='insert';
+            }else if(parcmd === 'Edit'){
+                parcmd='update';
+            }
         
-//        var prekening=Ext.getCmp('macc_rekening').getValue();
-//        var pnamarekening=Ext.getCmp('macc_namarekening').getValue();
-        var pjenis=Ext.getCmp('macc_jenis').getValue();
-        var pkelompok=Ext.getCmp('macc_kelompok').getValue();
+            //        var prekening=Ext.getCmp('macc_rekening').getValue();
+            //        var pnamarekening=Ext.getCmp('macc_namarekening').getValue();
+            var pjenis=Ext.getCmp('macc_jenis').getValue();
+            var pkelompok=Ext.getCmp('macc_kelompok').getValue();
         
             Ext.getCmp('FormMacc_id').getForm().submit({
                 url: this.url,
                 scope: this,
-                success: this.onSuccess,
-                failure: this.onFailure,
+//                success: this.onSuccess,
+//                failure: this.onFailure,
                 params: {
                     cmd: parcmd,
                     jenis: pjenis,
@@ -285,39 +289,18 @@ if (!defined('BASEPATH'))
                 },
                 waitMsg: 'Saving Data...',
                 success: function(form, action) {
-                       console.log(action);
-                       Ext.Msg.alert('Success', action.result.msg);
-                       Ext.getCmp('FormMacc_id').getForm().reset();
-                       Ext.getCmp('WindowMacc_id').close();
-                    },
+//                    console.log(action);
+                    set_message(0,action.result.msg);
+//                    Ext.Msg.alert('Success', action.result.msg);
+                    Ext.getCmp('gridid').store.reload(); 
+                    Ext.getCmp('FormMacc_id').getForm().reset();
+                    Ext.getCmp('WindowMacc_id').close();
+                },
                 failure: function(form, action) {
-                        Ext.Msg.alert('Failed', action.result.msg);
-                    }
+                    Ext.Msg.alert('Failed', action.result.msg);
+                }
             });
-        } // eo function submit
-        ,
-        onSuccess: function(form, action){
-            Ext.Msg.show({
-                title: 'Success',
-                msg: 'Form submitted successfully',
-                modal: true,
-                icon: Ext.Msg.INFO,
-                buttons: Ext.Msg.OK
-            });
-            
-            
-//            MasterAccountStore.reload();
-//            Ext.getCmp('FormMacc_id').getForm().reset();
-//            Ext.getCmp('WindowMacc_id').hide();
-        } // eo function onSuccess
-        ,
-        onFailure: function(form, action){
-        
-            var fe = Ext.util.JSON.decode(action.response.responseText);
-            this.showError(fe.errMsg || '');
-            
-            
-        } // eo function onFailure
+        } // eo function submit        
         ,
         showError: function(msg, title){
             title = title || 'Error';
@@ -397,11 +380,17 @@ if (!defined('BASEPATH'))
                                         handler: function(grid, rowIndex, colIndex) {
                                             var rec = grid.getStore().getAt(rowIndex);
                                             var winmacc=Ext.create('WindowMacc');
-                                        winmacc.setTitle('Edit Form');
-                                        Ext.getCmp('btn_macc_simpan').setText('Edit');
-                                        Ext.getCmp('btn_macc_simpan').setIconCls('icon-edit-record');
-                                        winmacc.show();
-//                                            Ext.Msg.alert('Edit', 'Edit ' + rec.get('rekening'));
+                                            winmacc.setTitle('Edit Form');
+                                            Ext.getCmp('btn_macc_simpan').setText('Edit');
+                                            Ext.getCmp('btn_macc_simpan').setIconCls('icon-edit-record');
+                                            Ext.getCmp('macc_rekening').setReadOnly(true);
+                                            Ext.getCmp('macc_rekening').setFieldStyle('readonly-input');
+                                            Ext.getCmp('macc_rekening').setValue(rec.get('rekening'));
+                                            Ext.getCmp('macc_namarekening').setValue(rec.get('nama_rekening'));
+                                            Ext.getCmp('macc_jenis').setValue(rec.get('jenis'));
+                                            Ext.getCmp('macc_kelompok').setValue(rec.get('kelompok'));
+                                            winmacc.show();
+                                            //                                            Ext.Msg.alert('Edit', 'Edit ' + rec.get('rekening'));
                                         }
                                     },{
                                         getClass: function(v, meta, rec) {
@@ -411,8 +400,76 @@ if (!defined('BASEPATH'))
                                             return 'Delete Plant';
                                         },
                                         handler: function(grid, rowIndex, colIndex) {
-                                            var rec = grid.getStore().getAt(rowIndex)
-                                            Ext.Msg.alert('Delete', 'Delete ' + rec.get('rekening'));
+                                            var rec = grid.getStore().getAt(rowIndex);
+                                            console.log(rec.data);
+                                            //                                            Ext.Msg.alert('Delete', 'Delete ' + rec.get('rekening'));
+                                            Ext.Msg.show({
+                                                title: 'Confirm',
+                                                msg: 'Are you sure delete selected row ?',
+                                                buttons: Ext.Msg.YESNO,
+                                                icon: Ext.Msg.QUESTION,
+                                                fn: function(btn){
+                                                    if (btn == 'yes') {
+                    
+                                                        var data = '';
+                                                        data = Ext.JSON.encode(rec.data);
+                        
+                                                        Ext.Ajax.request({                                                            
+                                                            url: '<?php echo base_url(); ?>' +'masteraccount/delete_row',
+                                                            method: 'POST',
+                                                            params: {
+                                                                cmd: 'delete',
+                                                                postdata: data
+                                                            },
+                                                            success: function(obj) {
+                                                                var   resp = Ext.decode(obj.responseText);                                                                
+                                                                if(resp.success==true){
+//                                                                    Ext.Msg.alert('info',resp.msg);
+                                                                    set_message(0,resp.msg);
+                                                                    Ext.getCmp('gridid').store.reload();                                                                                                                                     
+                                                                }else{
+                                                                    Ext.Msg.show({
+                                                                        title: 'Error',
+                                                                        msg: resp.msg,
+                                                                        modal: true,
+                                                                        icon: Ext.Msg.ERROR,
+                                                                        buttons: Ext.Msg.OK,
+                                                                        fn: function(btn){
+                                                                            if (btn == 'ok' && resp.msg == 'Session Expired') {
+                                                                                window.location = '<?= site_url("auth/login") ?>';
+                                                                            }
+                                                                        }
+                                                                    });
+                                                                }
+                                                            },
+                                                            failure: function(obj) {
+                                                                var  resp = Ext.decode(obj.responseText);
+                                                                Ext.Msg.alert('info',resp.reason);
+                                                            }
+//                                                            ,
+//                                                            callback:function(opt,success,responseObj){
+//                                                                var de = Ext.util.JSON.decode(responseObj.responseText);
+//                                                                if(de.success==true){
+//                                                                    Ext.getCmp('gridid').store.reload();                                                                                                                                     
+//                                                                }else{
+//                                                                    Ext.Msg.show({
+//                                                                        title: 'Error',
+//                                                                        msg: de.errMsg,
+//                                                                        modal: true,
+//                                                                        icon: Ext.Msg.ERROR,
+//                                                                        buttons: Ext.Msg.OK,
+//                                                                        fn: function(btn){
+//                                                                            if (btn == 'ok' && de.errMsg == 'Session Expired') {
+//                                                                                window.location = '<?= site_url("auth/login") ?>';
+//                                                                            }
+//                                                                        }
+//                                                                    });
+//                                                                }
+//                                                            }
+                                                        });                 
+                                                    } 
+                                                }
+                                            });
                                         }
                                     }
                                 ]
@@ -445,6 +502,18 @@ if (!defined('BASEPATH'))
                                 dataIndex: 'nama_jenis',
                                 sortable: true,
                                 width: 100
+                            },{
+                                header: "Kelompok",
+                                dataIndex: 'kelompok',
+                                sortable: true,
+                                width: 50,
+                                hidden:true
+                            },{
+                                header: "Jenis",
+                                dataIndex: 'jenis',
+                                sortable: true,
+                                width: 50,
+                                hidden:true
                             }
                         
                         ]

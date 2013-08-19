@@ -15,7 +15,7 @@
         <script type="text/javascript">
             var STARTPAGE = 0;
             var ENDPAGE = <?= $this->config->item('length_records') ?>;
-
+            var required_css = '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>';
 //            var BASE_ICONS = BASE_PATH + 'assets/icons/';
             function session_expired(err){
                 Ext.Msg.show({
@@ -31,7 +31,41 @@
                         }
                     }
                 });
-            }			
+            }	
+            function set_message(opt,vmsg){
+                if (opt==0){
+                    Ext.Msg.show({
+                    title:'Message Info',
+                    msg: vmsg,
+                    buttons: Ext.Msg.OK,
+                    icon: Ext.Msg.INFO
+                    });
+                }else if (opt==1){
+                    Ext.Msg.show({
+                    title:'Message Error',
+                    msg: vmsg,
+                    buttons: Ext.Msg.OK,
+                    icon: Ext.Msg.ERROR
+                    });
+                }else if (opt==2){
+                    Ext.Msg.show({
+                    title:'Message Warning',
+                    msg: vmsg,
+                    buttons: Ext.Msg.OK,
+                    icon: Ext.Msg.WARNING
+                    });
+                }
+                    
+            }
+            
         </script>
         
     
+
+        
+        
+        
+        
+        
+        
+        
