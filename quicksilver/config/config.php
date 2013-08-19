@@ -359,6 +359,6 @@ $config['rewrite_short_tags'] = FALSE;
 */
 $config['proxy_ips'] = '';
 $config['app_title']	= 'Quick Silver Accounting';
-
+$config['length_records']	= 20;
 /* End of file config.php */
 /* Location: ./application/config/config.php */
