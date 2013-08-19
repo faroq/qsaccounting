@@ -30,3 +30,12 @@
     color:#555;
     background: #f9f9f9;
 }
+.icons-add{
+    background-image:url('../images/icons/add.png') !important;
+}
+.icon-edit-record{
+    background-image:url('../images/icons/application_edit.png') !important;
+}
+.icon-delete{
+    background-image:url('../images/icons/delete.gif')!important;
+}
