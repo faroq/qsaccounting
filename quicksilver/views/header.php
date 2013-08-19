@@ -4,8 +4,34 @@
         <title>
             <?php echo $this->config->item('app_title'); ?>
         </title>
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/extjs/resources/ext-theme-neptune/ext-theme-neptune-all.css'); ?>">
-            <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/style/mainstyle.css'); ?>">            
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/extjs/resources/ext-theme-gray/ext-theme-gray-all.css'); ?>">
+            
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/style/mainstyle.css'); ?>">            
         <script type="text/javascript" src="<?php echo base_url('assets/extjs/ext-all.js'); ?>"></script>
         <script type="text/javascript" src="<?php echo base_url('assets/extjs/ux/TabCloseMenu.js'); ?>"></script>
+        <script type="text/javascript" src="<?php echo base_url('assets/extjs/ux/SlidingPager.js'); ?>"></script>
+        <script type="text/javascript" src="<?php echo base_url('assets/extjs/ux/form/SearchField.js'); ?>"></script>
+        
+        <script type="text/javascript">
+            var STARTPAGE = 0;
+            var ENDPAGE = <?= $this->config->item('length_records') ?>;
+
+//            var BASE_ICONS = BASE_PATH + 'assets/icons/';
+            function session_expired(err){
+                Ext.Msg.show({
+                    title: 'Error',
+                    msg: err,
+                    modal: true,
+                    closable: false,
+                    icon: Ext.Msg.ERROR,
+                    buttons: Ext.Msg.OK,
+                    fn: function(btn){
+                        if (btn == 'ok') {
+                            window.location = '<?= site_url("auth/login") ?>';
+                        }
+                    }
+                });
+            }			
+        </script>
+        
     

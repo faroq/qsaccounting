@@ -2,6 +2,8 @@
 //if (!defined('BASEPATH'))
 //    exit('No direct script access allowed');
 $this->load->view('header');
+$this->load->view('masteraccount');
+
 ?>
 <script type="text/javascript" language="javascript">
     //    Ext.require(['*']);
@@ -17,13 +19,45 @@ $this->load->view('header');
         });
         function addTab(vid,vtitle,vhtml){
             var tabs=Ext.getCmp('id_tabmain');
-            tabs.add({
+            var tm=null;
+                  
+            var widgetname="Tab" + vtitle.toString().replace(" ","");
+            try{
+                console.log('sampai sini');
+                tm=Ext.createWidget(widgetname);     
+                tabs.add(tm); 
+                tm.show();                 
+                
+            }catch(ex){                
+                tabs.add({
                 id: vid,
-                title: vtitle,
+                title: vtitle,                
                 //                                iconCls: 'tabs',
                 html: vhtml ,
+//                items:[tabchilds],
                 closable: true
             }).show();
+            }  
+//            var tc=Ext.createWidget(widgetname); 
+//            console.log(widgetname);
+//          var tabchilds=Ext.getCmp(vid);        
+//            if (tabchilds == null){
+//            
+//                tabs.add({
+//                id: vid,
+//                title: vtitle,                
+//                //                                iconCls: 'tabs',
+//                html: vhtml ,
+////                items:[tabchilds],
+//                closable: true
+//            }).show();
+//                
+//            }else{                   
+//                
+//                tabs.add(tm);
+//                tm.show();
+//            }
+            
         }
         var treePanel = new Ext.tree.Panel({
             id: 'id_treepanel',
@@ -67,7 +101,7 @@ $this->load->view('header');
             enableTabScroll: true,
             defaults: {
                 autoScroll:true,
-                bodyPadding: 10
+                bodyPadding: 2
             }
             ,
             items: [
@@ -88,7 +122,27 @@ $this->load->view('header');
                 }
             ]
             ,plugins: Ext.create('Ext.ux.TabCloseMenu', {
-                    
+//                    extraItemsTail: [
+//                '-',
+//                {
+//                    text: 'Closable',
+//                    checked: true,
+//                    hideOnClick: true,
+//                    handler: function (item) {
+//                        currentItem.tab.setClosable(item.checked);
+//                    }
+//                }
+//            ],
+//            listeners: {
+//                aftermenu: function () {
+//                    currentItem = null;
+//                },
+//                beforemenu: function (menu, item) {
+//                    var menuitem = menu.child('*[text="Closable"]');
+//                    currentItem = item;
+//                    menuitem.setChecked(item.closable);
+//                }
+//            }
             })
             
         });
