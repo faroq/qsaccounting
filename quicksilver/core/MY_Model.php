@@ -13,13 +13,7 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-if (!class_exists('CI_Model')) {
-
-    class CI_Model extends Model {
-        
-    }
-
-}
+if(!class_exists('CI_Model')) { class CI_Model extends Model {} }
 
 class MY_MODEL extends CI_Model {
 
@@ -53,8 +47,13 @@ class MY_MODEL extends CI_Model {
             $this->db->select($select);
         }
         $total = $this->db->get($table)->num_rows();
-
-        $results = '{success:true,record:' . $total . ',data:' . json_encode($rows) . '}';
+        
+        if ($total>0 ){
+            $results = '{success:true,record:' . $total . ',data:' . json_encode($rows) . '}';
+        }  else {
+            $results = '{success:false,msg:"No Data Found"}';
+        }
+        
         return $results;
     }
 

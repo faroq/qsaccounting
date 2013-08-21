@@ -13,7 +13,7 @@ class mst_account_kel extends CI_Controller {
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('mst_account_kel', 'mst_account_kel_model');
+        $this->load->model('mst_accountkel', 'makel');
     } 
 
     public function get_rows()
@@ -23,7 +23,7 @@ class mst_account_kel extends CI_Controller {
         $limit = isset($_POST['limit']) ? $this->db->escape_str($this->input->post('limit', TRUE)) : $this->config->item("length_records");
         $search = isset($_POST['query']) ? $this->db->escape_str($this->input->post('query', TRUE)) : '';
 
-        $result = $this->mst_account_kel_model->get_rows($search, $start, $limit);
+        $result = $this->makel->get_rows($search, $start, $limit);
         echo $result;
     }
 
@@ -40,7 +40,7 @@ class mst_account_kel extends CI_Controller {
         
         $param=array($opt,$jenis,$dk,$kelompok,$nama_kelompok,$kode_asosiasi,$nilai,);
         $spname='sp_mst_account_kel';
-        $result = $this->mst_account_kel_model->SP_execData($spname, $param, true);
+        $result = $this->makel->SP_execData($spname, $param, true);
         echo $result;
         
     }
@@ -59,7 +59,7 @@ class mst_account_kel extends CI_Controller {
         
         $param=array($opt,$jenis,$dk,$kelompok,$nama_kelompok,$kode_asosiasi,$nilai,);
         $spname='sp_mst_account_kel';
-        $result = $this->mst_account_kel_model->SP_execData($spname, $param, true);
+        $result = $this->makel->SP_execData($spname, $param, true);
         echo $result;
         
     }

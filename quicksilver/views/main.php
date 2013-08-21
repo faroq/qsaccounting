@@ -22,9 +22,9 @@ $this->load->view('masterkelompokaccount');
             var tabs=Ext.getCmp('id_tabmain');
             var tm=null;
                   
-            var widgetname="Tab" + vtitle.toString().replace(" ","");
+            var widgetname="Tab" + vtitle.toString().replace( /\s/g, '' );
             try{
-                console.log('sampai sini');
+                console.log(widgetname);
                 tm=Ext.createWidget(widgetname);     
                 tabs.add(tm); 
                 tm.show();                 
