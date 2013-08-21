@@ -3,6 +3,7 @@
 //    exit('No direct script access allowed');
 $this->load->view('header');
 $this->load->view('masteraccount');
+$this->load->view('masterkelompokaccount');
 
 ?>
 <script type="text/javascript" language="javascript">
