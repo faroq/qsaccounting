@@ -38,7 +38,7 @@ class mst_account_kel extends CI_Controller {
         $nilai = isset($_POST['nilai']) ? $this->db->escape_str($this->input->post('nilai', TRUE)) : '';
         $flag = isset($_POST['flag']) ? $this->db->escape_str($this->input->post('flag', TRUE)) : '';
         
-        $param=array($opt,$jenis,$dk,$kelompok,$nama_kelompok,$kode_asosiasi,$nilai,);
+        $param=array($opt,$jenis,$dk,$kelompok,$nama_kelompok,$kode_asosiasi,$nilai);
         $spname='sp_mst_account_kel';
         $result = $this->makel->SP_execData($spname, $param, true);
         echo $result;
@@ -57,7 +57,7 @@ class mst_account_kel extends CI_Controller {
         $nilai = ' ';
         $flag = ' ';
         
-        $param=array($opt,$jenis,$dk,$kelompok,$nama_kelompok,$kode_asosiasi,$nilai,);
+        $param=array($opt,$jenis,$dk,$kelompok,$nama_kelompok,$kode_asosiasi,$nilai);
         $spname='sp_mst_account_kel';
         $result = $this->makel->SP_execData($spname, $param, true);
         echo $result;

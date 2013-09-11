@@ -4,16 +4,16 @@ if (!defined('BASEPATH'))
 ?>
 
 <script type="text/javascript" language="javascript"> 
-    var mst_account_kel_store = Ext.create('Ext.data.Store',
+    var acc_master_posting_store = Ext.create('Ext.data.Store',
     {
         autoLoad	: false,
         autoSync	: false,
-        storeId		: 'mst_account_kel_store',
-        fields          : ['jenis','nama_jenis','dk','default','kelompok','nama_kelompok','kode_asosiasi','nilai','flag'],
+        storeId		: 'acc_master_posting_store',
+        fields          : ['id', 'tablefrom', 'validation', 'debet', 'debet', 'kredit', 'akun_selisih', 'created_date', 'update_date'],
         proxy		: {
             type: 'ajax',
             api: {                    
-                read    : '<?php echo base_url(); ?>' + 'mst_account_kel/get_rows'
+                read    : '<?php echo base_url(); ?>' + 'acc_master_posting/get_rows'
 		   
             },
             actionMethods: {                    
@@ -50,12 +50,12 @@ if (!defined('BASEPATH'))
                 }
             }
         }
-    });    
+    });
     
-    Ext.define('mst_account_kel_form', {
+    Ext.define('acc_master_posting_form', {
         extend          : 'Ext.form.Panel',
-        alias           : 'widget.mst_account_kel_form',
-        id              : 'mst_account_kel_form',
+        alias           : 'widget.acc_master_posting_form',
+        id              : 'acc_master_posting_form',
         requires        : [
             'Ext.form.Field'
         ],
@@ -66,89 +66,82 @@ if (!defined('BASEPATH'))
             labelWidth: 150
         },
         monitorValid: true,
-        url: '<?php echo base_url(); ?>' + 'mst_account_kel/update_rows',
+        url: '<?php echo base_url(); ?>' + 'acc_master_posting/update_rows',
         buttonAlign     : 'center',
         padding         : 5,
         style           : 'background-color: #fff;',
         border          : false,
         initComponent   : function(){
             this.items = [
-                //                    cbjenis,
                 {
-                    xtype: 'combo',
+                    name: 'id',
+                    id: 'acc_master_posting_id_txt',
                     tooltip: 'Field tidak boleh kosong',
                     afterLabelTextTpl: required_css,
-                    fieldLabel: 'Jenis Rekening',                        
-                    id: 'mst_account_kel_jenis_cb',
-                    store: mst_account_kel_jenis_store,
-                    valueField: 'jenis',
-                    displayField: 'nama_jenis',
-                    typeAhead: true,
-                    triggerAction: 'all',                    
-                    // allowBlank: false,
-                    editable: false,
-                    anchor: '90%',
-                    hiddenName: 'jenis',
-                    emptyText: 'Jenis Rekening'
+                    fieldLabel: 'id'
                 },
                 {
-                    xtype: 'combo',
+                    name: 'tablefrom',
+                    id: 'acc_master_posting_tablefrom_txt',
                     tooltip: 'Field tidak boleh kosong',
                     afterLabelTextTpl: required_css,
-                    fieldLabel: 'Debet Kredit',
-                    id: 'mst_account_kel_dk_cb',
-                    store: mst_account_kel_dk_store,
-                    valueField: 'dk',
-                    displayField: 'default',
-                    typeAhead: true,
-                    triggerAction: 'all',
-                    // allowBlank: false,
-                    editable: false,
-                    anchor: '90%',
-                    hiddenName: 'dk',
-                    emptyText: 'Debet Kredit'
+                    fieldLabel: 'Table From'
                 },
                 {
-                    name: 'kelompok',
-                    id: 'mst_account_kel_kelompok_txt',
+                    name: 'validation',
+                    id: 'acc_master_posting_validation_txt',
                     tooltip: 'Field tidak boleh kosong',
                     afterLabelTextTpl: required_css,
-                    fieldLabel: 'Kelompok'
+                    fieldLabel: 'Validation'
                 },
                 {
-                    name: 'nama_kelompok',
-                    id: 'mst_account_kel_nama_kelompok_txt',
-                    tooltip: 'Field tidak boleh kosong',
-                    afterLabelTextTpl: required_css,
-                    fieldLabel: 'Nama Kelompok'
-                },
-                {
-                    name: 'kode_asosiasi',
-                    id: 'mst_account_kel_kode_asosiasi_txt',
-                    tooltip: 'Field tidak boleh kosong',
-                    afterLabelTextTpl: required_css,
-                    fieldLabel: 'Kode Asosiasi'
-                },
-                {
-                    name: 'nilai',
-                    id: 'mst_account_kel_nilai_txt',
-                    tooltip: 'Field tidak boleh kosong',
-                    afterLabelTextTpl: required_css,
-                    fieldLabel: 'Nilai'
-                },
-                {
-                    name: 'flag',
-                    id: 'mst_account_kel_flag_txt',
+                    name: 'isselisih',
+                    id: 'acc_master_posting_isselisih_txt',
                     xtype:'checkbox',
                     afterLabelTextTpl: required_css,
-                    fieldLabel: 'Flag'
+                    fieldLabel: 'Selisih'
+                },
+                {
+                    name: 'debet',
+                    id: 'acc_master_posting_debet_txt',
+                    tooltip: 'Field tidak boleh kosong',
+                    afterLabelTextTpl: required_css,
+                    fieldLabel: 'Debet'
+                },
+                {
+                    name: 'kredit',
+                    id: 'acc_master_posting_kredit_txt',
+                    tooltip: 'Field tidak boleh kosong',
+                    afterLabelTextTpl: required_css,
+                    fieldLabel: 'Kredit'
+                },
+                {
+                    name: 'akun_selisih',
+                    id: 'acc_master_posting_akun_selisih_txt',
+                    tooltip: 'Field tidak boleh kosong',
+                    afterLabelTextTpl: required_css,
+                    fieldLabel: 'Akun Selisih'
+                },
+                {
+                    name: 'created_date',
+                    id: 'acc_master_posting_created_date_txt',
+                    tooltip: 'Field tidak boleh kosong',
+                    afterLabelTextTpl: required_css,
+                    fieldLabel: 'Created Date'
+                },
+                {
+                    name: 'update_date',
+                    id: 'acc_master_posting_update_date_txt',
+                    tooltip: 'Field tidak boleh kosong',
+                    afterLabelTextTpl: required_css,
+                    fieldLabel: 'Update Date'
                 }
             ];
             this.buttons = [
                 {
                     text: 'Simpan',                    
                     itemId: 'simpan',
-                    id:'mst_account_kel_simpan_btn',
+                    id:'acc_master_posting_simpan_btn',
                     iconCls: 'save',
                     handler: this.submit
                 },
@@ -165,36 +158,22 @@ if (!defined('BASEPATH'))
             this.callParent(arguments);
         },
         submit: function(){
-            var parcmd=Ext.getCmp('mst_account_kel_simpan_btn').getText();
+            var parcmd=Ext.getCmp('acc_master_posting_simpan_btn').getText();
             if(parcmd === 'Simpan'){
                 parcmd='insert';
             }else if(parcmd === 'Edit'){
                 parcmd='update';
             }
         
-            //        var prekening=Ext.getCmp('macc_rekening').getValue();
-            //        var pnamarekening=Ext.getCmp('macc_namarekening').getValue();
-            var pjenis=Ext.getCmp('mst_account_kel_jenis_cb').getValue();
-            var pdk=Ext.getCmp('mst_account_kel_dk_cb').getValue();
-        
-            Ext.getCmp('mst_account_kel_form').getForm().submit({
+            Ext.getCmp('acc_master_posting_form').getForm().submit({
                 url: this.url,
                 scope: this,
-//                success: this.onSuccess,
-//                failure: this.onFailure,
-                params: {
-                    cmd: parcmd,
-                    jenis: pjenis,
-                    dk:pdk
-                },
                 waitMsg: 'Saving Data...',
                 success: function(form, action) {
-//                    console.log(action);
                     set_message(0,action.result.msg);
-//                    Ext.Msg.alert('Success', action.result.msg);
-                    Ext.getCmp('mst_account_kel_grid').store.reload();
-                    Ext.getCmp('mst_account_kel_form').getForm().reset();
-                    Ext.getCmp('mst_account_kel_wind').close();
+                    Ext.getCmp('acc_master_posting_grid').store.reload();
+                    Ext.getCmp('acc_master_posting_form').getForm().reset();
+                    Ext.getCmp('acc_master_posting_wind').close();
                 },
                 failure: function(form, action) {
                     Ext.Msg.alert('Failed', action.result.msg);
@@ -219,7 +198,7 @@ if (!defined('BASEPATH'))
         }
     });
 
-    Ext.define('mst_account_kel_wind', {
+    Ext.define('acc_master_posting_wind', {
         extend          : 'Ext.window.Window',
         title           : 'Form Edit User',
         width           : 400,
@@ -228,42 +207,42 @@ if (!defined('BASEPATH'))
         autoShow        : true,
         modal           : true,
         alias           : 'widget.MaccEdit',
-        id              : 'mst_account_kel_wind',
+        id              : 'acc_master_posting_wind',
         initComponent   : function(){
             this.items = [
-                Ext.widget('mst_account_kel_form')
+                Ext.widget('acc_master_posting_form')
             ];
             this.callParent(arguments);
         }
 
     });
     //
-    Ext.define('MyTabMasterKelompokAccount',
+    Ext.define('MyTabMasterPosting',
     {
         extend: 'Ext.container.Container',
-        xtype: 'TabMasterKelompokAccount',
-        alias: 'widget.MasterKelompokAccount',
-        title: 'Master Kelompok Account',
-        id: 'tab1j',
+        xtype: 'TabMasterPosting',
+        alias: 'widget.MasterPosting',
+        title: 'Master Posting',
+        id: 'tab1b',
         closable: true,        
         layout: 'border',
         items: [{
                 xtype: 'panel',
                 autoShow: true,
-                id: 'mst_account_kel_panel',
+                id: 'acc_master_posting_panel',
                 region: 'center',
                 margins: '5 5 5 5',
                 layout: 'fit',
                 items:[
                     {
                         xtype:'grid',
-                        id:'mst_account_kel_grid',
+                        id:'acc_master_posting_grid',
                         stateful:true,
                         stateId:'stateGrid',
-                        store: mst_account_kel_store,//Ext.data.StoreManager.lookup('mst_account_kel_store'),
+                        store: acc_master_posting_store,//Ext.data.StoreManager.lookup('acc_master_posting_store'),
                         stripeRows: true,
                         loadMask: true,
-                        //                        sm:sm_mst_account_kel,
+                        //                        sm:sm_acc_master_posting,
                         columns:[
                             {
                                 header: 'Edit/Delete',
@@ -277,22 +256,26 @@ if (!defined('BASEPATH'))
                                         tooltip: 'Edit Row',
                                         handler: function(grid, rowIndex, colIndex) {
                                             var rec = grid.getStore().getAt(rowIndex);
-                                            var winmacc=Ext.create('mst_account_kel_wind');
+                                            var winmacc=Ext.create('acc_master_posting_wind');
                                             winmacc.setTitle('Edit Form');
-                                            Ext.getCmp('mst_account_kel_simpan_btn').setText('Edit');
-                                            Ext.getCmp('mst_account_kel_simpan_btn').setIconCls('icon-edit-record');
-                                            Ext.getCmp('mst_account_kel_kelompok_txt').setReadOnly(true);
-                                            Ext.getCmp('mst_account_kel_kelompok_txt').setFieldStyle('readonly-input');
-                                            Ext.getCmp('mst_account_kel_kelompok_txt').setValue(rec.get('kelompok'));
-                                            Ext.getCmp('mst_account_kel_jenis_cb').setValue(rec.get('jenis'));
-                                            Ext.getCmp('mst_account_kel_dk_cb').setValue(rec.get('dk'));
-                                            Ext.getCmp('mst_account_kel_nama_kelompok_txt').setValue(rec.get('nama_kelompok'));
-                                            Ext.getCmp('mst_account_kel_kode_asosiasi_txt').setValue(rec.get('kode_asosiasi'));
-                                            Ext.getCmp('mst_account_kel_nilai_txt').setValue(rec.get('nilai'));
-                                            if (rec.get('flag') == '*')
-                                                Ext.getCmp('mst_account_kel_flag_txt').setValue(true);
+                                            Ext.getCmp('acc_master_posting_simpan_btn').setText('Edit');
+                                            Ext.getCmp('acc_master_posting_simpan_btn').setIconCls('icon-edit-record');
+                                            Ext.getCmp('acc_master_posting_id_txt').setReadOnly(true);
+                                            Ext.getCmp('acc_master_posting_id_txt').setFieldStyle('readonly-input');
+                                            Ext.getCmp('acc_master_posting_id_txt').setValue(rec.get('id'));
+                                            Ext.getCmp('acc_master_posting_tablefrom_txt').setValue(rec.get('tablefrom'));
+                                            Ext.getCmp('acc_master_posting_validation_txt').setValue(rec.get('validation'));
+                                            Ext.getCmp('acc_master_posting_debet_txt').setValue(rec.get('debet'));
+
+                                            Ext.getCmp('acc_master_posting_kredit_txt').setValue(rec.get('kredit'));
+                                            Ext.getCmp('acc_master_posting_akun_selisih_txt').setValue(rec.get('akun_selisih'));
+                                            Ext.getCmp('acc_master_posting_created_date_txt').setValue(rec.get('created_date'));
+                                            Ext.getCmp('acc_master_posting_update_date_txt').setValue(rec.get('update_date'));
+
+                                            if (rec.get('isselisih') == '1')
+                                                Ext.getCmp('acc_master_posting_isselisih_txt').setValue(true);
                                             else
-                                                Ext.getCmp('mst_account_kel_flag_txt').setValue(false);
+                                                Ext.getCmp('acc_master_posting_isselisih_txt').setValue(false);
                                             winmacc.show();
                                             //                                            Ext.Msg.alert('Edit', 'Edit ' + rec.get('rekening'));
                                         }
@@ -319,7 +302,7 @@ if (!defined('BASEPATH'))
                                                         data = Ext.JSON.encode(rec.data);
                         
                                                         Ext.Ajax.request({                                                            
-                                                            url: '<?php echo base_url(); ?>' +'mst_account_kel/delete_row',
+                                                            url: '<?php echo base_url(); ?>' +'acc_master_posting/delete_row',
                                                             method: 'POST',
                                                             params: {
                                                                 cmd: 'delete',
@@ -329,7 +312,7 @@ if (!defined('BASEPATH'))
                                                                 var   resp = Ext.decode(obj.responseText);                                                                
                                                                 if(resp.success==true){
                                                                     set_message(0,resp.msg);
-                                                                    Ext.getCmp('mst_account_kel_grid').store.reload();
+                                                                    Ext.getCmp('acc_master_posting_grid').store.reload();
                                                                 }else{
                                                                     Ext.Msg.show({
                                                                         title: 'Error',
@@ -358,58 +341,56 @@ if (!defined('BASEPATH'))
                                 ]
                             },
                             {
-                                header: "Jenis",
-                                dataIndex: 'jenis',
-                                sortable: true,
-                                width: 70,
-                                hidden:true
-                            },
-                            {
-                                header: "Jenis",
-                                dataIndex: 'nama_jenis',
+                                header: "id",
+                                dataIndex: 'id',
                                 sortable: true,
                                 width: 70
                             },
                             {
-                                header: "DK",
-                                dataIndex: 'dk',
-                                sortable: true,
-                                width: 70,
-                                hidden:true
-                            },
-                            {
-                                header: "Debet Kredit",
-                                dataIndex: 'default',
-                                sortable: true,
-                                width: 70
-                            },
-                            {
-                                header: "Kelompok",
-                                dataIndex: 'kelompok',
-                                sortable: true,
-                                width: 70
-                            },
-                            {
-                                header: "Nama Kelompok",
-                                dataIndex: 'nama_kelompok',
+                                header: "Table From",
+                                dataIndex: 'tablefrom',
                                 sortable: true,
                                 width: 120
                             },
                             {
-                                header: "Kode Asosiasi",
-                                dataIndex: 'kode_asosiasi',
+                                header: "Validation",
+                                dataIndex: 'validation',
                                 sortable: true,
                                 width: 70
                             },
                             {
-                                header: "Nilai",
-                                dataIndex: 'nilai',
+                                header: "Selisih",
+                                dataIndex: 'isselisih',
                                 sortable: true,
                                 width: 70
                             },
                             {
-                                header: "Flag",
-                                dataIndex: 'flag',
+                                header: "Debet",
+                                dataIndex: 'debet',
+                                sortable: true,
+                                width: 70
+                            },
+                            {
+                                header: "Kredit",
+                                dataIndex: 'kredit',
+                                sortable: true,
+                                width: 70
+                            },
+                            {
+                                header: "Akun Selisih",
+                                dataIndex: 'akun_selisih',
+                                sortable: true,
+                                width: 70
+                            },
+                            {
+                                header: "Created Date",
+                                dataIndex: 'created_date',
+                                sortable: true,
+                                width: 70
+                            },
+                            {
+                                header: "Update Date",
+                                dataIndex: 'update_date',
                                 sortable: true,
                                 width: 70
                             }
@@ -422,23 +403,23 @@ if (!defined('BASEPATH'))
                                     text: 'Add',
                                     iconCls: 'icons-add',
                                     onClick: function(){
-                                        var winmacc=Ext.create('mst_account_kel_wind');
+                                        var winmacc=Ext.create('acc_master_posting_wind');
                                         winmacc.setTitle('Add Form');
-                                        Ext.getCmp('mst_account_kel_simpan_btn').setText('Simpan');
-                                        Ext.getCmp('mst_account_kel_simpan_btn').setIconCls('icons-add');
+                                        Ext.getCmp('acc_master_posting_simpan_btn').setText('Simpan');
+                                        Ext.getCmp('acc_master_posting_simpan_btn').setIconCls('icons-add');
                                         
                                         winmacc.show();
                                     }
                                 },'-',{
                                     width: 300,
                                     xtype: 'searchfield',
-                                    store: mst_account_kel_store,
+                                    store: acc_master_posting_store,
                                     emptyText: 'Quick Search...'
                                 }]
                         }
                         ,bbar:{                        
                             xtype: 'pagingtoolbar',
-                            store: mst_account_kel_store,pageSize: ENDPAGE,
+                            store: acc_master_posting_store,pageSize: ENDPAGE,
                             displayInfo: true
                         }
 
@@ -450,7 +431,7 @@ if (!defined('BASEPATH'))
         ],
         listeners:{
             show:function(){
-                var storegrid=Ext.getCmp('mst_account_kel_grid').store;
+                var storegrid=Ext.getCmp('acc_master_posting_grid').store;
                 storegrid.loadPage(1);
                     
                 

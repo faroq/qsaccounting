@@ -2,8 +2,16 @@
 //if (!defined('BASEPATH'))
 //    exit('No direct script access allowed');
 $this->load->view('header');
+$this->load->view('global_reference_store');
 $this->load->view('masteraccount');
 $this->load->view('masterkelompokaccount');
+$this->load->view('journalmonitor');
+$this->load->view('entryjurnal');
+$this->load->view('journalapproval');
+$this->load->view('generalledger');
+$this->load->view('trialbalance');
+$this->load->view('incomestatement');
+$this->load->view('balancesheet');
 
 ?>
 <script type="text/javascript" language="javascript">
