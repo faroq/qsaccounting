@@ -1,4 +1,18 @@
 /*home*/
+#header-north{
+    width:100%;
+    height:100%;
+/*    position: fixed; */
+    left: 0px; 
+    top: 0px; 
+    z-index: -1; 
+    color:#D5E1EA;
+   
+}
+.stretch {
+    width:100%;
+    height:100%;
+}
 #start-div h2 {
     font-size: 12px;
     color: #555;
@@ -39,3 +53,38 @@
 .icon-delete{
     background-image:url('../images/icons/delete.gif')!important;
 }
+
+.icon-refresh{
+    background-image:url('../images/icons/refresh.gif')!important;
+}
+
+.icon-simpan{
+    background-image:url('../images/icons/save.gif')!important;
+}
+.icon-approval{
+    background-image:url('../images/icons/list_accept.png')!important;
+}
+.icon-reject{
+    background-image:url('../images/icons/list_delete.png')!important;
+}
+/*delete.gif*/
+.my_toolbar{
+/*height: 104px !important;
+width: 2048px !important;*/
+/*background-image: url('../images/nav/bkgnd.png') !important;*/
+border: none !important;
+background: #0079d2;
+/*background: ;*/
+}
+.label-color{
+    color: white;
+}
+
+.log_out div a span
+{
+    color: black !important;
+/*    font-weight: bolder;*/
+}
+
+.lbl-text-logout {color:white;font-size:12px; }
+          /*.lbl-text-logout a {color:white;}*/
