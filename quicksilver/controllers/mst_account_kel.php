@@ -8,7 +8,7 @@ if (!defined('BASEPATH'))
  * and open the template in the editor.
  */
 
-class mst_account_kel extends CI_Controller {
+class mst_account_kel extends MY_Controller {
 
     public function __construct()
     {

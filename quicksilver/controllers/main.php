@@ -12,7 +12,7 @@ if (!defined('BASEPATH'))
  *
  * @author faroq
  */
-class main extends CI_Controller {
+class main extends MY_Controller {
 
     //put your code here
     public function __construct() {
@@ -21,7 +21,16 @@ class main extends CI_Controller {
     }
 
     public function index() {
-        $this->load->view('main');
+        $data['username'] = $this->session->userdata('username');
+	$data['jabatan'] = $this->session->userdata('jabatan');
+        $data['departement']= $this->session->userdata('departement');
+        $data['roleid']= $this->session->userdata('roleid');
+//        $roleid =$this->session->userdata('roleid');
+//	$accordion_menu = $this->my_auth->get_accordion_menu($this->session->userdata('kd_group'));
+//	$data['accordion_menu'] = $accordion_menu;
+									
+        $this->load->view('main', $data);  
+//        $this->load->view('main');
     }
 
     public function getMainMenu() {       

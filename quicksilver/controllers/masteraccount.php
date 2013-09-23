@@ -8,7 +8,7 @@ if (!defined('BASEPATH'))
  * and open the template in the editor.
  */
 
-class masteraccount extends CI_Controller {
+class masteraccount extends MY_Controller {
 
     public function __construct() {
         parent::__construct();
@@ -77,8 +77,6 @@ class masteraccount extends CI_Controller {
         
     }
     
-
-
 }
 
 ?>

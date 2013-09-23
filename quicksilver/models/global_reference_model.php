@@ -60,6 +60,8 @@ class global_reference_model extends MY_MODEL {
         return $results;
 
     }
+    
+    
 }
 
 ?>

@@ -8,7 +8,7 @@ if (!defined('BASEPATH'))
  * and open the template in the editor.
  */
 
-class global_reference extends CI_Controller {
+class global_reference extends MY_Controller {
 
     public function __construct()
     {
@@ -46,6 +46,11 @@ class global_reference extends CI_Controller {
         echo $result;
     }
 
+    public function generate_idtrx($kode)
+    {        
+        $result = $this->global_reference_model->callFunction('genidtrx',array($kode));
+        return $result;
+    }
 }
 
 ?>

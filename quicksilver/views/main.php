@@ -17,13 +17,16 @@ $this->load->view('balancesheet');
 <script type="text/javascript" language="javascript">
     //    Ext.require(['*']);
     Ext.onReady(function() {
+//        Ext.util.Format.thousandSeparator = ',';
+//        Ext.util.Format.decimalSeparator = '.';
+//        var required = '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>'
         var treedata = new Ext.data.TreeStore({
             root: {
                 expanded: true
             },
             proxy: {
                 type: 'ajax',
-                url: '<?php echo base_url(); ?>' + 'main/getMainMenu'
+                url: '<?php echo base_url(); ?>' + 'main/getMainMenu?roleid=' + '<?php echo $roleid; ?>'
             }
         });
         function addTab(vid,vtitle,vhtml){
@@ -159,20 +162,28 @@ $this->load->view('balancesheet');
         var viewport = new Ext.Viewport({
             layout: {
                 type: 'border',
-                padding: 5
+//                padding: 5
             },
             defaults: {
                 split: true
             },
             items: [{
                     region: 'north',
+//                    xtype:'box',
                     collapsible: false,
                     //            title: 'North',
+//                    border:false,
+                    id:'header-north',
+//                    style: 'background: blue;',
+                    cls:'header-north',
+//                    margins: '2 2 0 2',
                     split: false,
-                    height: 60,
+                    height: 70,
                     minHeight: 40,
-                    html: 'north'
-                },{
+                    html: '<div id="header-north"><img src="'+'<?php echo base_url(); ?>'+'/assets/images/bgheader.png" class="stretch" alt="" /></div>'
+//                    ,bbar:
+                }
+                            ,{
                     region: 'west',
                     collapsible: true,
                     title: 'Main Menu',
@@ -180,6 +191,7 @@ $this->load->view('balancesheet');
                     width: '20%',
                     minWidth: 100,
                     minHeight: 140,
+                    margins: '2 0 5 5',
                     items:[treePanel]
                     //            html: 'west<br>I am floatable'
                 },{
@@ -188,8 +200,30 @@ $this->load->view('balancesheet');
                     layout: 'border',
                     //                    html: 'center center',
                     //                    title: 'Center',
-                    minHeight: 140,                    
+                    minHeight: 140,      
+                    margins: '2 5 5 0',
                     items: [
+                        {
+//                           
+                            region: 'north',
+                            xtype: 'toolbar',                           
+//                            cls:'my_toolbar',                            //                           
+                            items: ['->',
+                                    {
+                                        
+                                    xtype:'label',  
+//                                    cls:'label-color',
+                                    html: 'Welcome <b><?= strtoupper($username) ?></b>, you are login as a <b><?= strtoupper($jabatan) ?></b>&nbsp;&nbsp;'
+                                },'-',' '
+                                ,{
+                                    text:'<b>Logout</b>',
+                                    scope:this,
+                                    cls:'log_out',
+                                    iconCls: 'icon-delete'
+                                    ,handler: doLogout
+                                },' '                                    
+                            ]
+                            },
                         {
                             xtype   : 'container',
                             region  : 'center',
@@ -197,29 +231,39 @@ $this->load->view('balancesheet');
                             items   : [tabMain]}
                     ]
                     //            bbar: []
-                },{
-                    region: 'east',
-                    collapsible: true,
-                    floatable: true,
-                    split: true,
-                    width: 200,
-                    minWidth: 120,
-                    minHeight: 140,
-                    title: 'East',
-                    layout: {
-                        type: 'vbox',
-                        padding: 5,
-                        align: 'stretch'
-                    },
-                    items: [{
-                            xtype: 'textfield',
-                            labelWidth: 70,
-                            fieldLabel: 'Text field'
-                        }, {
-                            xtype: 'component',
-                            html: 'I am floatable'
-                        }]
-                }
+                },
+        
+            {
+                id      : 'appFooter',
+                xtype   : 'box',
+                region  : 'south',
+                height  : 20,
+                split: false,
+                html    : '<center>Develop By PT. Solusi Informatika Semesta</center>'
+            }
+//                ,{
+//                    region: 'east',
+//                    collapsible: true,
+//                    floatable: true,
+//                    split: true,
+//                    width: 200,
+//                    minWidth: 120,
+//                    minHeight: 140,
+//                    title: 'East',
+//                    layout: {
+//                        type: 'vbox',
+//                        padding: 5,
+//                        align: 'stretch'
+//                    },
+//                    items: [{
+//                            xtype: 'textfield',
+//                            labelWidth: 70,
+//                            fieldLabel: 'Text field'
+//                        }, {
+//                            xtype: 'component',
+//                            html: 'I am floatable'
+//                        }]
+//                }
             ]
             //        ,
             //        listeners:
@@ -230,6 +274,27 @@ $this->load->view('balancesheet');
             //            }
         });
     });
+    
+    function doLogout(){
+                            Ext.Msg.show({
+                                title: 'Konfirmasi',
+                                msg: 'Are you sure to Logout?',
+                                buttons: Ext.Msg.YESNO,
+                                icon: Ext.Msg.QUESTION,
+                                fn: function(btn){
+                                    if (btn == 'yes') {
+                                        Ext.Ajax.request({
+                                            url: '<?= site_url("auth/logout") ?>',
+                                            method: 'POST',
+                                            success: function(xhr){
+                                                window.location = '<?= site_url("auth/login") ?>';
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+            
+                        }
 </script>
 </head>
 <body>

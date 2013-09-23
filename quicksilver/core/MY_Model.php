@@ -79,7 +79,26 @@ class MY_MODEL extends CI_Model {
         $results = '{success:true,record:' . $total . ',data:' . json_encode($rows) . '}';
         return $results;
     }
+    function callFunction($fname,$param=NULL){
+        $sql = "";
+        $query = NULL;
+        if ($param) {
+            $genparam = join(',', array_fill(0, count($param), '?'));
+            $sql = "select $fname($genparam) as retval";
+            $query = $this->db->query($sql, $param);
+        } else {
+            $sql = "select $fname() as retval";
+            $query = $this->db->query($sql);
+        }
 
+        $rows = array();
+        $total = 0;
+        if ($query->num_rows() > 0) {
+            $rows = $query->result();
+            $total = $query->num_rows();
+        }        
+        return $rows;
+    }
     function SP_getData($spname, $param = NULL) {
         $sql = "";
         $query = NULL;
@@ -98,7 +117,10 @@ class MY_MODEL extends CI_Model {
             $rows = $query->result();
             $total = $query->num_rows();
         }
+        
         $results = '{success:true,record:' . $total . ',data:' . json_encode($rows) . '}';
+        $query->next_result();
+        $query->free_result();
         return $results;
     }
 
@@ -159,7 +181,8 @@ class MY_MODEL extends CI_Model {
             }
                 
         }
-
+        $query->next_result();
+        $query->free_result();
         return $results;
     }
 

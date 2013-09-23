@@ -4,6 +4,7 @@
         <title>
             <?php echo $this->config->item('app_title'); ?>
         </title>
+        <!--<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/extjs/resources/ext-theme-classic/ext-theme-classic-all.css'); ?>">-->
         <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/extjs/resources/ext-theme-gray/ext-theme-gray-all.css'); ?>">
             
         <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/style/mainstyle.css'); ?>">            
@@ -11,6 +12,9 @@
         <script type="text/javascript" src="<?php echo base_url('assets/extjs/ux/TabCloseMenu.js'); ?>"></script>
         <script type="text/javascript" src="<?php echo base_url('assets/extjs/ux/SlidingPager.js'); ?>"></script>
         <script type="text/javascript" src="<?php echo base_url('assets/extjs/ux/form/SearchField.js'); ?>"></script>
+        <script type="text/javascript" src="<?php echo base_url('assets/extjs/ux/form/NumericField.js'); ?>"></script>
+        <script type="text/javascript" src="<?php echo base_url('assets/extjs/ux/form/TwinCombo.js'); ?>"></script>
+        
         
         <script type="text/javascript">
             var STARTPAGE = 0;
@@ -57,6 +61,53 @@
                 }
                     
             }
+            function createStore(vautoload,vstoreId,vfields,vurl,listen){
+              return Ext.create('Ext.data.Store',{
+        //        pageSize: ENDPAGE,
+        autoLoad	: vautoload,
+        autoSync	: false,
+        storeId		: vstoreId,
+        fields: vfields,
+        proxy		: {
+            type: 'ajax',
+            api: {
+                    
+                read    : vurl
+		   
+            },
+            actionMethods: {                    
+                read    : 'POST'
+            },
+            reader: {
+                type            : 'json',
+                root            : 'data',
+                rootProperty    : 'data',
+                successProperty : 'success',
+                totalProperty   : 'record'
+                //                    messageProperty : 'message'
+            },
+            writer: {
+                type            : 'json',
+                writeAllFields  : true,
+                root            : 'data',
+                encode          : true
+            },
+            listeners: listen
+//                {
+//                exception: function(proxy, response, operation){
+//                    Ext.MessageBox.show({
+//                        title: 'REMOTE EXCEPTION',
+//                        msg: operation.getError(),
+//                        icon: Ext.MessageBox.ERROR,
+//                        buttons: Ext.Msg.OK
+//                    });
+//                }
+//            }
+        }
+    });
+            }
+            
+            
             
         </script>
         
