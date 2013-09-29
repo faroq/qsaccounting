@@ -37,6 +37,23 @@ class loadmenu extends CI_Model {
 
         return $data;
     }
+    
+    public function get_menu_head($roleid) {       
+//        $db =$this->load->database('default', TRUE);
+        $this->db->where('role_id', $roleid);
+        $this->db->where('isheader', true);
+        $this->db->where('parentmenu', '0');
+        $query=$this->db->get('v_acc_rolemenu');        
+        return $query->result();
+    }
+    
+    public function get_menu_child($roleid) {     
+        $sqlwhere="parentmenu <> '0'";
+        $this->db->where('role_id', $roleid);
+        $this->db->where($sqlwhere,NULL);
+        $query=$this->db->get('v_acc_rolemenu');        
+        return $query->result();
+    }
 
 }
 

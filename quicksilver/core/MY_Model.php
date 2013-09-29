@@ -48,11 +48,11 @@ class MY_MODEL extends CI_Model {
         }
         $total = $this->db->get($table)->num_rows();
         
-        if ($total>0 ){
+//        if ($total>0 ){
             $results = '{success:true,record:' . $total . ',data:' . json_encode($rows) . '}';
-        }  else {
-            $results = '{success:false,msg:"No Data Found"}';
-        }
+//        }  else {
+//            $results = '{success:false,msg:"No Data Found"}';
+//        }
         
         return $results;
     }
@@ -119,6 +119,31 @@ class MY_MODEL extends CI_Model {
         }
         
         $results = '{success:true,record:' . $total . ',data:' . json_encode($rows) . '}';
+        $query->next_result();
+        $query->free_result();
+        return $results;
+    }
+    
+    function SP_getData_array($spname, $param = NULL) {
+        $sql = "";
+        $query = NULL;
+        if ($param) {
+            $genparam = join(',', array_fill(0, count($param), '?'));
+            $sql = "call $spname($genparam)";
+            $query = $this->db->query($sql, $param);
+        } else {
+            $sql = "call $spname()";
+            $query = $this->db->query($sql);
+        }
+
+        $rows = array();
+        $total = 0;
+        if ($query->num_rows() > 0) {
+            $rows = $query->result();
+            $total = $query->num_rows();
+        }
+        
+        $results = $query->result();
         $query->next_result();
         $query->free_result();
         return $results;

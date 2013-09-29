@@ -36,22 +36,16 @@ if (!defined('BASEPATH'))
                 root            : 'data',
                 encode          : true
             },
-            listeners: {
-                exception: function(proxy, response, operation){
-                    Ext.MessageBox.show({
-                        title: 'REMOTE EXCEPTION',
-                        msg: operation.getError(),
-                        icon: Ext.MessageBox.ERROR,
-                        buttons: Ext.Msg.OK
-                    });
-                },
-                loadexception: function(event, options, response, error){
-                    var err = Ext.util.JSON.decode(response.responseText);
-                    if (err.errMsg == 'Session Expired') {
-                        session_expired(err.errMsg);
-                    }
-                }
-            }
+            listeners: {//                {
+                                    exception: function(proxy, response, operation){
+                                        var err = Ext.decode(response.responseText);                    
+                                        if (err.errMsg == 'Session Expired') {
+                                            session_expired(err.errMsg);
+                                        }else{
+                                            set_message(1,err.errMsg);
+                                        }                                       
+                                    }
+                                }
         }
     });
     
@@ -87,22 +81,16 @@ if (!defined('BASEPATH'))
                 root            : 'data',
                 encode          : true
             },
-            listeners: {
-                exception: function(proxy, response, operation){
-                    Ext.MessageBox.show({
-                        title: 'REMOTE EXCEPTION',
-                        msg: operation.getError(),
-                        icon: Ext.MessageBox.ERROR,
-                        buttons: Ext.Msg.OK
-                    });
-                },
-                loadexception: function(event, options, response, error){
-                    var err = Ext.util.JSON.decode(response.responseText);
-                    if (err.errMsg == 'Session Expired') {
-                        session_expired(err.errMsg);
-                    }
-                }
-            }
+            listeners: {//                {
+                                    exception: function(proxy, response, operation){
+                                        var err = Ext.decode(response.responseText);                    
+                                        if (err.errMsg == 'Session Expired') {
+                                            session_expired(err.errMsg);
+                                        }else{
+                                            set_message(1,err.errMsg);
+                                        }                                       
+                                    }
+                                }
         }
     });
     
@@ -137,22 +125,16 @@ if (!defined('BASEPATH'))
                 root            : 'data',
                 encode          : true
             },
-            listeners: {
-                exception: function(proxy, response, operation){
-                    Ext.MessageBox.show({
-                        title: 'REMOTE EXCEPTION',
-                        msg: operation.getError(),
-                        icon: Ext.MessageBox.ERROR,
-                        buttons: Ext.Msg.OK
-                    });
-                },
-                loadexception: function(event, options, response, error){
-                    var err = Ext.util.JSON.decode(response.responseText);
-                    if (err.errMsg == 'Session Expired') {
-                        session_expired(err.errMsg);
-                    }
-                }
-            }
+            listeners: {//                {
+                                    exception: function(proxy, response, operation){
+                                        var err = Ext.decode(response.responseText);                    
+                                        if (err.errMsg == 'Session Expired') {
+                                            session_expired(err.errMsg);
+                                        }else{
+                                            set_message(1,err.errMsg);
+                                        }                                       
+                                    }
+                                }
         }
     });  
     
@@ -297,7 +279,13 @@ if (!defined('BASEPATH'))
                     Ext.getCmp('WindowMacc_id').close();
                 },
                 failure: function(form, action) {
-                    Ext.Msg.alert('Failed', action.result.msg);
+                    if(action.result.msg=='Session Expired') {
+                                            session_expired(action.result.msg);
+                                        }else{
+                                            set_message(1, action.result.msg);
+                                        }
+                                            
+                    
                 }
             });
         } // eo function submit        

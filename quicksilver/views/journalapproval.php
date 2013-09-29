@@ -303,10 +303,10 @@ if (!defined('BASEPATH'))
                 var   resp = Ext.decode(obj.responseText);                                                                
                 if(resp.success==true){
                     //                                                                    Ext.Msg.alert('info',resp.msg);
+                    Ext.getCmp('grid_detail_approval').getStore().removeAll(); 
+                    Ext.getCmp('grid_to_approval').getStore().removeAll();   
+                    Ext.getCmp('grid_to_approval').getStore().reload();
                     set_message(0,resp.msg);
-                    Ext.getCmp('grid_detail_approval').getStore().loadPage(1); 
-                    Ext.getCmp('grid_to_approval').getStore().reload();   
-                    
                 }else{
                     set_message(1,resp.msg);
                 }

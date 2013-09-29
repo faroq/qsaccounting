@@ -4,55 +4,11 @@ if (!defined('BASEPATH'))
 ?>
 
 <script type="text/javascript" language="javascript"> 
-    var JournalMonitor_store = Ext.create('Ext.data.Store',
-    {
-        autoLoad	: false,
-        autoSync	: false,
-        storeId		: 'JournalMonitor_store',
-        fields          : ['id_jurnal','nomor_jurnal','tgl_jurnal','referensi','keterangan','transaksi_cd','rekening','akun_type','jumlah','jurnal_by','jurnal_date','update_date'],
-        proxy		: {
-            type: 'ajax',
-            api: {                    
-                read    : '<?php echo base_url(); ?>' + 'global_reference/rep_JournalMonitor'
-		   
-            },
-            actionMethods: {                    
-                read    : 'POST'
-            },
-            reader: {
-                type            : 'json',
-                root            : 'data',
-                rootProperty    : 'data',
-                successProperty : 'success',
-                totalProperty   : 'record'
-                //                    messageProperty : 'message'
-            },
-            writer: {
-                type            : 'json',
-                writeAllFields  : true,
-                root            : 'data',
-                encode          : true
-            },
-            listeners: {
-                exception: function(proxy, response, operation){
-                    Ext.MessageBox.show({
-                        title: 'REMOTE EXCEPTION',
-                        msg: operation.getError(),
-                        icon: Ext.MessageBox.ERROR,
-                        buttons: Ext.Msg.OK
-                    });
-                },
-                loadexception: function(event, options, response, error){
-                    var err = Ext.util.JSON.decode(response.responseText);
-                    if (err.errMsg == 'Session Expired') {
-                        session_expired(err.errMsg);
-                    }
-                }
-            }
-        }
-    });
-
     
+    var journalMonitor_store = createStore(false,'jmon_store',['id_jurnal','nomor_jurnal','tgl_jurnal',{name: 'referensi', type: 'string'},'keterangan','transaksi_cd','rekening','nama_rekening','debet','kredit','jurnal_by','jurnal_date','update_date'],'<?php echo base_url(); ?>' + 'jurnal_monitor/get_row_monitor');
+    //    var jmon_account_store = createStore(true,'jmon_account_store',['rekening','nama_rekening'],'<?php echo base_url(); ?>' + 'masteraccount/get_rows');
+
+  
     Ext.define('MyTabJournalMonitor',
     {
         extend: 'Ext.container.Container',
@@ -63,17 +19,17 @@ if (!defined('BASEPATH'))
         closable: true,  
         layout: 'border',
         items: 
-        [
-        /*bos panel filter*/
+            [
+            /*bos panel filter*/
             {
                 xtype: 'panel',
                 autoShow: true,
                 id: 'panelfiltermonitor',
                 region: 'north',
                 margins: '5 5 5 5',
-                layout: 'column',
+                layout: 'column',                
                 items:
-                [
+                    [
                     {
                         xtype: 'form',
                         columnWidth: .4,
@@ -84,43 +40,88 @@ if (!defined('BASEPATH'))
                         defaults: { labelSeparator: ''},
                         items :[
                             {
-                                xtype: 'datefield',
-                                name: 'tgl_Awal',
-                                afterLabelTextTpl: required_css,
-                                fieldLabel: 'Tanggal Awal',
-                                anchor: '90%'
-                            },
+                                xtype:'fieldset',
+                                id:'jmon_tgl',
+                                checkboxToggle:true,
+                                title: 'Filter Date',
+                                defaultType: 'datefield',
+                                collapsed: false,
+                                layout: 'anchor',
+                                defaults: {
+                                    anchor: '100%'
+                                },
+                                items :[
+                                    {
+                                        xtype: 'datefield',
+                                        name: 'tgl_Awal',
+                                        vtype:'daterange',
+                                        endDateField: 'jmon_tgl_akhir',
+                                        afterLabelTextTpl: required_css,
+                                        fieldLabel: 'Tanggal Awal',
+                                        format:'Y-m-d',
+                                        anchor: '90%'
+                                        ,id:'jmon_tgl_awal'
+                                    },
+                                    {
+                                        xtype: 'datefield',
+                                        name: 'tgl_Akhir',
+                                        vtype:'daterange',
+                                        startDateField:  'jmon_tgl_awal',
+                                        afterLabelTextTpl: required_css,
+                                        fieldLabel: 'Tanggal Akhir',
+                                        anchor: '90%',
+                                        format:'Y-m-d'
+                                        ,id:'jmon_tgl_akhir'
+                                    }]
+                            
+                            }
+                        ]
+                    },
+                    {
+                        xtype: 'form',
+                        columnWidth: .4,
+                        layout: 'form',
+                        border: false,
+                        labelWidth: 80,
+                        bodyPadding: '5 5 5 5',
+                        defaults: { labelSeparator: ''},
+                        items :[
                             {
-                                xtype: 'datefield',
-                                name: 'tgl_Akhir',
-                                afterLabelTextTpl: required_css,
-                                fieldLabel: 'Tanggal Akhir',
-                                anchor: '90%'
-                            },
-                            {
-                                xtype: 'combo',
-                                tooltip: 'Field tidak boleh kosong',
-                                afterLabelTextTpl: required_css,
-                                fieldLabel: 'Jenis Akun',
-                                id: 'journalmonitor_mst_account_cb',
-                                store: mst_account_store,
-                                valueField: 'rekening',
-                                displayField: 'nama_rekening',
-                                typeAhead: true,
-                                triggerAction: 'all',
-                                // allowBlank: false,
-                                editable: false,
-                                anchor: '90%',
-                                hiddenName: 'rekening',
-                                emptyText: 'Akun'
+                                xtype:'fieldset'
+                                ,id:'jmon_filter'
+                                ,checkboxToggle:true,
+                                title: 'Filter Referensi/Keterangan/Rekening',
+                                defaultType: 'textfield',
+                                collapsed: false,                                
+                                layout: 'anchor',
+                                defaults: {
+                                    anchor: '100%'
+                                },
+                                items :[{
+                                        xtype: 'radiogroup',
+                                        fieldLabel: 'Filter By',
+                                        //            cls: 'x-check-group-alt',
+                                        items: [
+                                            {boxLabel: 'Referensi', name: 'rbfilter', inputValue: 1},
+                                            {boxLabel: 'Keterangan', name: 'rbfilter', inputValue: 2, checked: true},
+                                            {boxLabel: 'Rekening', name: 'rbfilter', inputValue: 3},
+                
+                                        ],id:'jmon_filter_by'
+                                    },{
+                                        xtype:'textfield',
+                                        fieldLabel: 'Filter Value',
+                                        //                                        afterLabelTextTpl: required_css,
+                                        name: 'last'
+                                        ,id:'jmon_filter_value'
+                                    }]
                             }
                         ]
                     }
                 ]
             },
-        /*eos panel filter*/
+            /*eos panel filter*/
 
-        /*bos panel grid*/
+            /*bos panel grid*/
             {
                 xtype: 'panel',
                 autoShow: true,
@@ -131,15 +132,14 @@ if (!defined('BASEPATH'))
                 items:[
                     {
                         xtype:'grid',
-                        id:'JournalMonitor_grid',
+                        id:'jmon_grid',
                         stateful:true,
                         stateId:'stateGrid',
-                        store: JournalMonitor_store,//Ext.data.StoreManager.lookup('JournalMonitor_store'),
+                        store: journalMonitor_store,//Ext.data.StoreManager.lookup('JournalMonitor_store'),
                         stripeRows: true,
-                        loadMask: true,
-                        //                        sm:sm_JournalMonitor,
+                        loadMask: true,                                                
                         columns:
-                        [
+                            [
                             {
                                 header: "ID Jurnal",
                                 dataIndex: 'id_jurnal',
@@ -151,49 +151,62 @@ if (!defined('BASEPATH'))
                                 header: "Nomor Jurnal",
                                 dataIndex: 'nomor_jurnal',
                                 sortable: true,
-                                width: 70
+                                width: 80
                             },
                             {
                                 header: "Tgl Jurnal",
                                 dataIndex: 'tgl_jurnal',
                                 sortable: true,
-                                width: 70
+                                width: 80
                             },
                             {
                                 header: "Referensi",
                                 dataIndex: 'referensi',
                                 sortable: true,
                                 width: 70
+                                //                                }
                             },
                             {
                                 header: "Keterangan",
                                 dataIndex: 'keterangan',
+                                //                                flex:1,
                                 sortable: true,
-                                width: 70
-                            },
-                            {
-                                header: "Transaksi Cd",
-                                dataIndex: 'transaksi_cd',
-                                sortable: true,
-                                width: 120
+                                width: 200
                             },
                             {
                                 header: "Rekening",
                                 dataIndex: 'rekening',
                                 sortable: true,
                                 width: 70
+                            },{
+                                header: "Nama Rekening",
+                                dataIndex: 'nama_rekening',
+                                sortable: true,
+                                width: 120
                             },
                             {
-                                header: "Akun Type",
-                                dataIndex: 'akun_type',
-                                sortable: true,
-                                width: 70
+                                xtype:'numbercolumn',
+                                text: 'Debet',
+                                dataIndex: 'debet',
+                                sortable: false,                                
+                                width: 120,
+                                align:'right',
+                                format: '0,0'
+                            }
+                            ,{
+                                xtype:'numbercolumn',
+                                text: 'Kredit',
+                                dataIndex: 'kredit',
+                                sortable: false,                                
+                                width: 120,
+                                align:'right',
+                                format: '0,0'                                
                             },
                             {
-                                header: "jumlah",
-                                dataIndex: 'Jumlah',
+                                header: "Transaksi Cd",
+                                dataIndex: 'transaksi_cd',
                                 sortable: true,
-                                width: 70
+                                width: 100
                             },
                             {
                                 header: "Jurnal By",
@@ -206,19 +219,76 @@ if (!defined('BASEPATH'))
                                 dataIndex: 'jurnal_date',
                                 sortable: true,
                                 width: 70
-                            },
-                            {
-                                header: "Update Date",
-                                dataIndex: 'update_date',
-                                sortable: true,
-                                width: 70
+                            }, {
+                                dataIndex: 'visible',
+                                text: 'Visible'
+                                // this column's filter is defined in the filters feature config
                             }
                         ],
+                        tbar:{
+                            xtype:'toolbar',
+                            items:{
+                                xtype: 'button',
+                                text: 'Load Data',
+                                iconCls: 'icon-preview',                            
+                                handler:function(){
+                                    //validasi                                
+                                    if (!Ext.getCmp('jmon_tgl').collapsed){
+                                        if (!Ext.getCmp('jmon_tgl_awal').getValue()){
+                                            set_message(2,'Tanggal Awal Belum Dipilih');
+                                            return;
+                                        }
+                                        if (!Ext.getCmp('jmon_tgl_akhir').getValue()){
+                                            set_message(2,'Tanggal Akhir Belum Dipilih');
+                                            return;
+                                        }
+                                        if (Ext.getCmp('jmon_tgl_awal').getValue()>Ext.getCmp('jmon_tgl_akhir').getValue()){
+                                            set_message(2,'Tanggal Akhir kurang dari Tanggal Awal');
+                                            return;
+                                        }
+                                    }
+                                    //set parameter query
+                                    var parquery=new Array();
+                                    if (!Ext.getCmp('jmon_tgl').collapsed){
+                                        parquery.push({name:'tgl_awal',value:Ext.Date.format(Ext.getCmp('jmon_tgl_awal').getValue(), 'Y-m-d')});
+                                        parquery.push({name:'tgl_akhir',value:Ext.Date.format(Ext.getCmp('jmon_tgl_akhir').getValue(), 'Y-m-d')});
+                                       
+                                    }
+                                    if (!Ext.getCmp('jmon_filter').collapsed){                                    
+                                    
+                                        if (Ext.getCmp('jmon_filter_by').getValue().rbfilter==1){                                        
+                                            parquery.push({name:'referensi',value:Ext.getCmp('jmon_filter_value').getValue()});
+                                        }else if (Ext.getCmp('jmon_filter_by').getValue().rbfilter==2){
+                                            parquery.push({name:'keterangan',value:Ext.getCmp('jmon_filter_value').getValue()});                                                                                
+                                        }else if (Ext.getCmp('jmon_filter_by').getValue().rbfilter==3){
+                                            parquery.push({name:'rekening',value:Ext.getCmp('jmon_filter_value').getValue()});                                        
+                                        }
+                                    }
+                                
+                                    //                                 console.log(parquery.length);
+                                    if (parquery.length>0){
+                                        journalMonitor_store.removeAll();
+                                        journalMonitor_store.reload({params:{query:Ext.JSON.encode(parquery)}});
+                                    }
+                                    //                                
+                                }
+                            }
+                            
+                        },
                         bbar:{
                             xtype: 'pagingtoolbar',
-                            store: JournalMonitor_store,pageSize: ENDPAGE,
+                            store: journalMonitor_store,
+                            pageSize: ENDPAGE,
                             displayInfo: true
                         }
+//                        viewConfig:{
+//                            getRowClass: function(record, rowIndex, rp, ds){
+//                                if(record.get('jurnal_by')=='fnn'){
+//                                    console.log(record.get('jurnal_by'));
+//                                    return "x-grid-warna";
+//                                }
+//                            }
+//                        }
                     }
                 ]
             }        
@@ -226,11 +296,11 @@ if (!defined('BASEPATH'))
         /*eos panel grid*/
 
         listeners:
-        {
+            {
             show:function()
             {
-                var storegrid=Ext.getCmp('JournalMonitor_grid').store;
-                //storegrid.loadPage(1);
+                var storegrid=Ext.getCmp('jmon_grid').store;
+                storegrid.loadPage(1);
             }
         }, 
         initComponent: function()

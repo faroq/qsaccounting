@@ -3,20 +3,32 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 ?>
 <script type="text/javascript" language="javascript"> 
-    
-    var TrialBalancestore = Ext.create('Ext.data.Store',{
+    var tbUrl='<?php echo base_url(); ?>' + 'base_report/get_row_trialbalance';  
+    var tb_store = createStoreGroup(false,'mtb_store',['jenis','kelompok','rekening',
+        {name:'debet_awal', type:'float'},
+        {name:'kredit_awal', type:'float'},
+        {name:'mutasi_d', type:'float'},
+        {name:'mutasi_k', type:'float'},
+        {name:'debet_akhir', type:'float'},
+        {name:'kredit_akhir', type:'float'},
+        {name:'debet_rl', type:'float'},
+        {name:'kredit_rl', type:'float'},
+        {name:'debet_nr', type:'float'},
+        {name:'kredit_nr', type:'float'},
+        'cls'],'jenis',tbUrl);
+    var tb_store1 = Ext.create('Ext.data.Store',{
         //        pageSize: ENDPAGE,
         autoLoad	: false,
         autoSync	: false,
         storeId		: 'mTrialBalanceStore',
         fields: [ 
-            'rekening','nama_rekening','debet','kredit'
+            'jenis','kelompok','rekening','debet_awal','kredit_awal','mutasi_d','mutasi_k','debet_akhir','kredit_akhir','cls'
         ],
         proxy		: {
             type: 'ajax',
             api: {
                     
-                read    : '<?php echo base_url(); ?>' + 'masteraccount/get_rows'
+                read    : tbUrl
 		   
             },
             actionMethods: {                    
@@ -62,12 +74,13 @@ if (!defined('BASEPATH'))
         id: 'tab1g',
         closable: true,        
         layout: 'border',
-        items: [ {xtype: 'panel',
+        items: [ {xtype: 'panel',title:'Tahun Bulan Laporan',
                 autoShow: true,
                 id: 'panelTrialBalance',
                 region: 'north',
                 margins: '5 5 5 5',
                 layout: 'column',
+                collapsible:true,
                 items:[
                     {
                         xtype: 'form',
@@ -78,24 +91,16 @@ if (!defined('BASEPATH'))
                         bodyPadding: '5 5 5 5',
                         defaults: { labelSeparator: ''}
                         ,items :[{
-                
-                                xtype: 'datefield',
-                                name: 'tgl_jurnal',
-                                fieldLabel: 'Tanggal Entry',
-                                anchor: '90%'
-                                //                                ,afterLabelTextTpl: required_css
-                            },{
-                                xtype: 'textfield',
-                                name: 'referensi',
-                                fieldLabel: 'Referensi',
-                                anchor: '90%'
-            
-                            },{
-                                xtype: 'textfield',
-                                name: 'keterangan',
-                                fieldLabel: 'Keterangan',
-                                anchor: '90%'
-            
+                                xtype: 'monthfield',
+                                name: 'tb_thbl',                                        
+                                //                                        vtype:'daterange',
+                                //                                        startDateField:  'gl_tgl_awal',
+                                afterLabelTextTpl: required_css,
+                                fieldLabel: 'Tahun Bulan',
+                                anchor: '90%',
+                                format:'Y-F'
+                                ,id:'tb_thbl'
+                                //                                        ,maxValue:new Date()
                             }]
                     }
                 ]
@@ -111,68 +116,188 @@ if (!defined('BASEPATH'))
                     {
                         xtype:'grid',
                         id:'grid1g',
-                        //                        store: TrialBalancestore,
-                        //                        stripeRows: true,
-                        //                        loadMask: true,
+                                                store: tb_store,
+                                                stripeRows: true,
+                                                loadMask: true,
                         stateful:true,
-                        stateId:'stateGrid',
+//                        stateId:'stateGrid',
+                        autoScroll:true,
+                        columnLines:true,                        
                         columns:[
-                            {
+                             {
+                                text: 'Jenis',
+                                dataIndex: 'jenis',
+                                sortable: false,
+//                                flex:1,
+                                width: 80
+                            },
+//                            {
+//                                text: 'Kelompok',
+//                                dataIndex: 'kelompok',
+//                                sortable: false,
+////                                flex:1,
+//                                width: 120
+//                            },                           
+                            {                               
                                 text: 'Rekening',
                                 dataIndex: 'rekening',
                                 sortable: false,
-                                flex:1,
-                                width: 70
+//                                flex:1,
+                                width: 250,
+                                locked: true,
+                                hideable: false
                             }
-                            , {
-                                text: 'Nama Rekening',
-                                dataIndex: 'nama_rekening',
-                                sortable: false,
-                                flex:1,
-                                width: 70
-                            }
-                            , {
-                                text: 'Debet',
-                                dataIndex: 'debet',
-                                sortable: false,
-                                flex:1,
-                                width: 70
+                           ,{
+                                text:'Saldo Awal',
+                                columns: [{
+                                        xtype:'numbercolumn',
+                                        text: 'Debet',
+                                        dataIndex: 'debet_awal',
+                                        sortable: false,
+                                        align:'right',
+                                        format:'0,0',                                       
+                                        width: 100
+                                    }
+                                    ,{
+                                        xtype:'numbercolumn',
+                                        text: 'Kredit',
+                                        dataIndex: 'kredit_awal',
+                                        sortable: false,
+                                        align:'right',
+                                        format:'0,0',
+                                        width: 100
+                                    }]
+                            },{
+                                text:'Mutasi',
+                                columns: [{
+                                        xtype:'numbercolumn',
+                                        text: 'Debet',
+                                        dataIndex: 'mutasi_d',
+                                        sortable: false,
+                                        align:'right',
+                                        format:'0,0',
+                                       width: 100
+                                    }
+                                    ,{
+                                        xtype:'numbercolumn',
+                                        text: 'Kredit',
+                                        dataIndex: 'mutasi_k',
+                                        sortable: false,
+                                        align:'right',
+                                        format:'0,0',
+                                        width: 100
+                                    }]
+                            },{
+                                text:'Saldo Akhir',
+                                columns: [{
+                                        xtype:'numbercolumn',
+                                        text: 'Debet',
+                                        dataIndex: 'debet_akhir',
+                                        sortable: false,
+                                        align:'right',
+                                        format:'0,0',
+                                        width: 100
+                                    }
+                                    ,{
+                                        xtype:'numbercolumn',
+                                        text: 'Kredit',
+                                        dataIndex: 'kredit_akhir',
+                                        sortable: false,
+                                        align:'right',
+                                        format:'0,0',
+                                        width: 100
+                                    }]
                             }
                             ,{
-                                text: 'Kredit',
-                                dataIndex: 'kredit',
-                                sortable: false,
-                                flex:1,
-                                width: 70
-                            }
-                        ]
-                        ,bbar:['->' ,
-                            {xtype: 'numberfield',fieldLabel: 'Total Debet',currencySymbol: '',id: 'avr_tb_debet',fieldClass:'number',readOnly:true },
-                            '-',
-                            {xtype:'numberfield',fieldLabel: 'Total Kredit',currencySymbol: '',id: 'avr_tb_kredit',fieldClass:'number',  readOnly:true }
-                        ]
-                        
-                    }
-                ]
-            },{
-                xtype: 'panel',
-                autoShow: true,
-                //                id: 'gridTrialBalance',
-                region: 'south',
-                margins: '5 5 5 5',
-                layout: 'fit',
-                items:[
-                   { xtype: 'toolbar',
-                     height:40,
-                            padding:'2 0 2 5',
-                            items: ['->',{
-                                    xtype: 'button',
-                                    text: 'Save',
-                                    iconCls: 'icons-add'
+                                text:'Rugi/Laba',
+                                columns: [{
+                                        xtype:'numbercolumn',
+                                        text: 'Debet',
+                                        dataIndex: 'debet_rl',
+                                        sortable: false,
+                                        align:'right',
+                                        format:'0,0',
+//                                        summaryType: 'sum',
+
+//                                        flex:1,
+                                        width: 100
+                                    }
+                                    ,{
+                                        xtype:'numbercolumn',
+                                        text: 'Kredit',
+                                        dataIndex: 'kredit_rl',
+                                        sortable: false,
+                                        align:'right',
+                                        format:'0,0',
+//                                        summaryType: 'sum',
+
+//                                        flex:1,
+                                        width: 100
+                                    }]
                             },{
-                                    xtype: 'button',
-                                    text: 'Cancel / Reset'
+                                text:'Neraca',
+                                columns: [{
+                                        xtype:'numbercolumn',
+                                        text: 'Debet',
+                                        dataIndex: 'debet_nr',
+                                        sortable: false,
+                                        align:'right',
+                                        format:'0,0',
+//                                        summaryType: 'sum',
+
+//                                        flex:1,
+                                        width: 100
+                                    }
+                                    ,{
+                                        xtype:'numbercolumn',
+                                        text: 'Kredit',
+                                        dataIndex: 'kredit_nr',
+                                        sortable: false,
+                                        align:'right',
+                                        format:'0,0',
+//                                        summaryType: 'sum',
+
+//                                        flex:1,
+                                        width: 100
+                                        
+                                    }]
+                            }
+                            
+                        ],
+                        tbar:[{xtype: 'button',
+                                text: 'Load Data',
+                                iconCls: 'icon-preview',
+                                handler:function(){
+                                    if (!Ext.getCmp('tb_thbl').getValue()){
+                                        set_message(2,'Tahun Bulan Belum Diisi!!!');
+                                        return;
+                                    }
+                                    var vthbl=Ext.Date.format(Ext.getCmp('tb_thbl').getValue(),'Ym');
+                                    tb_store.load({params:{thbl:vthbl}});
+                
+                                }
                             }]
+                            ,features:[{
+                                ftype: 'grouping',
+                                //                                groupHeaderTpl: '{columnName}: {name} ({rows.length} Item{[values.rows.length > 1 ? "s" : ""]})',
+                                groupHeaderTpl: '{name}',
+                                hideGroupedHeader: true,
+                                startCollapsed: false,
+                                enableGroupingMenu: false,
+                                
+                                id: 'tb_grid_Grouping'
+                            }]
+                            ,viewConfig: {
+                            getRowClass: function(record, rowIndex, rp, ds){
+                                if(record.get('cls'))
+                                {
+                                    return record.get('cls');
+                                }
+                               
+                            }
+                        }
+                        
+                        
                     }
                 ]
             }

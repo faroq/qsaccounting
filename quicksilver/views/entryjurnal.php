@@ -3,8 +3,8 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 ?>
 <script type="text/javascript" language="javascript"> 
-    
-    // twin master akun    
+
+
     var strgrid_akun = createStore(true,'makun_ej_Store1',['rekening','nama_rekening'],'<?php echo base_url(); ?>' + 'masteraccount/get_rows');
 
         Ext.define('Windowej', {
@@ -112,6 +112,7 @@ if (!defined('BASEPATH'))
 		
     });
     
+    
     Ext.define('Writer.Entryjurnal', {
         extend: 'Ext.data.Model',
         fields: [{
@@ -180,6 +181,7 @@ if (!defined('BASEPATH'))
                                 allowBlank: false
                                 ,format:'Y-m-d'
                                 ,value:new Date()
+                                ,maxValue:new Date()
                                 ,afterLabelTextTpl: required_css
                             },{
                                 xtype: 'textfield',
