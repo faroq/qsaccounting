@@ -67,6 +67,11 @@
 .icon-reject{
     background-image:url('../images/icons/list_delete.png')!important;
 }
+.icon-preview{
+    background-image:url('../images/icons/application_view_list.png')!important;
+    
+}
+
 /*delete.gif*/
 .my_toolbar{
 /*height: 104px !important;
@@ -88,3 +93,14 @@ background: #0079d2;
 
 .lbl-text-logout {color:white;font-size:12px; }
           /*.lbl-text-logout a {color:white;}*/
+          
+.x-grid-warna .x-grid-cell     
+    {
+        background-color: #EDEDED;
+     font-weight:  bold;
+    }
+.x-hira-header .x-grid-cell 
+{
+        /*background-color: #EDEDED;*/
+     font-weight:  bold;
+    }
