@@ -54,7 +54,7 @@ class jurnal_monitor extends MY_Controller {
                 }
             }
         }
-        $select="id_jurnal,nomor_jurnal,tgl_jurnal,referensi,keterangan,rekening,nama_rekening,debet,kredit,transaksi_cd,jurnal_by,jurnal_date";        
+        $select="id_jurnal,nomor_jurnal,tgl_jurnal,referensi,keterangan,rekening,nama_rekening,debet,kredit,kode_posting,transaksi_cd,jurnal_by,jurnal_date";        
         $order=array("id_jurnal", "asc");     
         $table="v_jurnal_monitor";    
 //        echo $sql_search;

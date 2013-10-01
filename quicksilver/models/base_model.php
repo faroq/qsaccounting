@@ -22,9 +22,10 @@ class base_model extends MY_MODEL {
          $query=null;
          $this->db->select('kelompok,nama_kelompok,jenis,nama_jenis');
          if($jenis){
-             $this->db->where('jenis', $jenis);
+             $this->db->where_in('jenis', $jenis);
          }
          $this->db->group_by('kelompok,nama_kelompok,jenis,nama_jenis');
+         $this->db->order_by('jenis asc,kelompok asc');         
          $query=$this->db->get('v_mst_account');  
         return $query->result();
     }
@@ -36,6 +37,15 @@ class base_model extends MY_MODEL {
         
         return $result;
     }
+    public function get_incomestatement_child($thbl) {     
+        $param=array($thbl);
+//        $result=array();        
+       $result= $this->SP_getData_array('sp_incomestatement',$param);
+        
+        return $result;
+    }
+    
+    
     public function get_max_jenis_account(){
         $this->db->select_max('jenis');
         $query = $this->db->get('acc_jenisaccount');

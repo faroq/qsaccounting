@@ -6,8 +6,8 @@
         </title>
         <!--<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/extjs/resources/ext-theme-classic/ext-theme-classic-all.css'); ?>">-->
         <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/extjs/resources/ext-theme-gray/ext-theme-gray-all.css'); ?>">
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/style/mainstyle.css'); ?>">            
-            
+            <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/style/mainstyle.css'); ?>">            
+
                 <script type="text/javascript" src="<?php echo base_url('assets/extjs/ext-all.js'); ?>"></script>
                 <script type="text/javascript" src="<?php echo base_url('assets/extjs/ux/TabCloseMenu.js'); ?>"></script>
                 <script type="text/javascript" src="<?php echo base_url('assets/extjs/ux/SlidingPager.js'); ?>"></script>
@@ -36,6 +36,11 @@
                         ['10',"Oktober"],
                         ['11',"November"],
                         ['12',"Desember"]
+                    ];
+                    
+                    var yesno_data=[
+                        ['Y',"Yes"],
+                        ['N',"No"]
                     ];
                     function session_expired(err){
                         Ext.Msg.show({
@@ -114,7 +119,7 @@
                                         if (err.errMsg == 'Session Expired') {
                                             session_expired(err.errMsg);
                                         }
-                                       else{
+                                        else{
                                             console.log(err.errMsg);
                                         }                                       
                                     }
@@ -161,7 +166,7 @@
                                         if (err.errMsg == 'Session Expired') {
                                             session_expired(err.errMsg);
                                         }
-                                       else{
+                                        else{
                                             console.log(err.errMsg);
                                         }                                       
                                     }
@@ -170,7 +175,7 @@
                         });
                     }
             
-            function createStoreGroupers(vautoload,vstoreId,vfields,vgroup,vurl,listen){
+                    function createStoreGroupers(vautoload,vstoreId,vfields,vgroup,vurl,listen){
                         return Ext.create('Ext.data.Store',{
                             //        pageSize: ENDPAGE,
                             autoLoad	: vautoload,
@@ -208,7 +213,7 @@
                                         if (err.errMsg == 'Session Expired') {
                                             session_expired(err.errMsg);
                                         }
-                                       else{
+                                        else{
                                             console.log(err.errMsg);
                                         }                                       
                                     }
@@ -226,6 +231,80 @@
                             data:vdata
                         });
                     } 
+                    
+                    function setDefaultStoreProxy(store,urlProxy){
+                        store.proxy.api.read=urlProxy;
+                    }
+    
+    
+                    function defineTwinAkun_windows(winname,winid,storeakun,func_doubleklik){
+                        Ext.define(winname, {
+                            extend          : 'Ext.window.Window',
+                            title           : 'Search Rekening',
+                            width           : 410,
+                            height          : 300,
+                            layout          : 'fit',
+                            autoShow        : true,
+                            modal           : true,
+                            alias           : 'widget.search_rekening',
+                            id              : winid,
+                            items:[{
+                                    //            regin:'center',
+                                    xtype:'panel',
+                                    frameHeader:false,
+                                    //                    title: 'Pilih Akun',
+                                    layout: 'fit',
+                                    buttonAlign: 'left',
+                                    modal: true,
+                                    width: 400,
+                                    height: 300,
+                                    closeAction: 'hide',
+                                    plain: true,
+                                    items: [{
+                                            xtype:'grid',
+                                            store: storeakun,
+                                            stripeRows: true,
+                                            frame: true,
+                                            border:true,        
+                                            columns: [{
+                                                    header: 'Rekening',
+                                                    dataIndex: 'rekening',
+                                                    width: 80,
+                                                    sortable: true			
+                
+                                                },{
+                                                    header: 'Nama Rekening',
+                                                    dataIndex: 'nama_rekening',
+                                                    width: 300,
+                                                    sortable: true         
+                                                }],
+                                            tbar: {
+                    
+                                                //                                regin:'north',
+                                                xtype: 'toolbar',
+                                                items: [{xtype: 'searchfield',
+                                                        store: storeakun,
+                                                        width: 380,
+                                                        emptyText: 'Quick Search...'
+                                                    }]
+                                            },
+                                            bbar: {
+                                                xtype: 'pagingtoolbar',
+                                                pageSize: ENDPAGE,
+                                                store: storeakun,
+                                                displayInfo: true
+                                            },
+                                            listeners: {
+                                                'itemdblclick': func_doubleklik
+                                            }
+                                        }]
+                                }],
+                            initComponent   : function(){
+                                this.callParent(arguments);
+                            }
+
+                        });
+                    }
                 </script>
 
 

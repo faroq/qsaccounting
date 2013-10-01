@@ -35,6 +35,18 @@ class global_reference_model extends MY_MODEL {
         $results = $this->get_rows_table($sql_search,$table,$select,$order);
         return $results;
     }
+    
+    function get_dept()
+    {
+        $sql_search="";
+        $select="nomor_customer as dept,nama as nama_dept";
+        $order=NULL;
+        $table="mst_customer";
+        $results = $this->get_rows_table($sql_search,$table,$select,$order);
+        return $results;
+    }
+    
+    
 
     function get_mst_account()
     {

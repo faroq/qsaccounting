@@ -12,6 +12,8 @@ $this->load->view('generalledger');
 $this->load->view('trialbalance');
 $this->load->view('incomestatement');
 $this->load->view('balancesheet');
+$this->load->view('masterpostingaccount');
+$this->load->view('masterpostingbiaya');
 
 ?>
 <script type="text/javascript" language="javascript">

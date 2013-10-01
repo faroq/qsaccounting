@@ -5,7 +5,7 @@ if (!defined('BASEPATH'))
 <script type="text/javascript" language="javascript"> 
 
 
-    var strgrid_akun = createStore(true,'makun_ej_Store1',['rekening','nama_rekening'],'<?php echo base_url(); ?>' + 'masteraccount/get_rows');
+    var strgrid_akun = createStore(false,'makun_ej_Store1',['rekening','nama_rekening'],'<?php echo base_url(); ?>' + 'masteraccount/get_rows');
 
         Ext.define('Windowej', {
         extend          : 'Ext.window.Window',
@@ -509,6 +509,11 @@ if (!defined('BASEPATH'))
             }
            
         ],
+        listeners:{
+            show:function(){
+            strgrid_akun.load();
+            }
+        },
         initComponent: function() {
             this.callParent(arguments);
         }

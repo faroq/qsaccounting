@@ -34,8 +34,12 @@ class masteraccount extends MY_Controller {
     }
     
     public function get_kelompok($search) {
+        $query=null;
+        if($search){
+            $query=$search;
+        }
 //        $search = isset($_POST['search']) ? $this->db->escape_str($this->input->post('search', TRUE)) : '';
-        $result = $this->macc_model->get_kelompok($search);
+        $result = $this->macc_model->get_kelompok($query);
         echo $result;
     }
     

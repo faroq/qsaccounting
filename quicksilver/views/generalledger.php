@@ -3,7 +3,7 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 ?>
 <script type="text/javascript" language="javascript"> 
-    var store_gl_akun = createStore(true,'makun_gl_Store',['rekening','nama_rekening'],'<?php echo base_url(); ?>' + 'masteraccount/get_rows');
+    var store_gl_akun = createStore(false,'makun_gl_Store',['rekening','nama_rekening'],'<?php echo base_url(); ?>' + 'masteraccount/get_rows');
     //    var gl_store1 = createStore(false,'mgl_Store1',['tanggal','rekening','nama_rekening','keterangan','referensi','debet','kredit','jumlah'],'<?php echo base_url(); ?>' + 'base_report/get_row_gl');
     var gl_store1 = createStoreGroup(false,'mgl_Store1',['tanggal','rekening','keterangan','referensi','debet','kredit','jumlah'],'rekening','<?php echo base_url(); ?>' + 'base_report/get_row_gl');
     var gl_store2 = createStore(false,'mgl_Store2',['tanggal','keterangan','referensi','debet','kredit','jumlah'],'<?php echo base_url(); ?>' + 'base_report/get_row_gl');
@@ -332,6 +332,7 @@ if (!defined('BASEPATH'))
         ],
         listeners:{
             show:function(){
+                store_gl_akun.load();
                 Ext.getCmp('gl_rekening').getStore().reload();
                 Ext.getCmp('gl_filter_tgl').collapse(true);
             }  

@@ -4,7 +4,7 @@ if (!defined('BASEPATH'))
 ?>
 <script type="text/javascript" language="javascript"> 
     
-    var BalanceSheetstore = Ext.create('Ext.data.Store',{
+    var bls_store = Ext.create('Ext.data.Store',{
         //        pageSize: ENDPAGE,
         autoLoad	: false,
         autoSync	: false,
@@ -78,24 +78,16 @@ if (!defined('BASEPATH'))
                         bodyPadding: '5 5 5 5',
                         defaults: { labelSeparator: ''}
                         ,items :[{
-                
-                                xtype: 'datefield',
-                                name: 'tgl_jurnal',
-                                fieldLabel: 'Tanggal Entry',
-                                anchor: '90%'
-                                //                                ,afterLabelTextTpl: required_css
-                            },{
-                                xtype: 'textfield',
-                                name: 'referensi',
-                                fieldLabel: 'Referensi',
-                                anchor: '90%'
-            
-                            },{
-                                xtype: 'textfield',
-                                name: 'keterangan',
-                                fieldLabel: 'Keterangan',
-                                anchor: '90%'
-            
+                                xtype: 'monthfield',
+                                name: 'bls_thbl',                                        
+                                //                                        vtype:'daterange',
+                                //                                        startDateField:  'gl_tgl_awal',
+                                afterLabelTextTpl: required_css,
+                                fieldLabel: 'Tahun Bulan',
+                                anchor: '90%',
+                                format:'Y-F'
+                                ,id:'bls_thbl'
+                                //                                        ,maxValue:new Date()
                             }]
                     }
                 ]
@@ -118,61 +110,101 @@ if (!defined('BASEPATH'))
                         stateId:'stateGrid',
                         columns:[
                             {
+                                text:'AKTIVA',
+                                columns:[{
+                                text: 'Jenis',
+                                dataIndex: 'jenis',
+                                sortable: false,
+                                //                                flex:1,
+                                width: 80
+                            },{                               
                                 text: 'Rekening',
                                 dataIndex: 'rekening',
                                 sortable: false,
                                 flex:1,
-                                width: 70
-                            }
-                            , {
-                                text: 'Nama Rekening',
-                                dataIndex: 'nama_rekening',
-                                sortable: false,
-                                flex:1,
-                                width: 70
-                            }
-                            , {
-                                text: 'Debet',
-                                dataIndex: 'debet',
-                                sortable: false,
-                                flex:1,
-                                width: 70
-                            }
-                            ,{
-                                text: 'Kredit',
-                                dataIndex: 'kredit',
-                                sortable: false,
-                                flex:1,
-                                width: 70
-                            }
-                        ]
-                        ,bbar:['->' ,
-                            {xtype: 'numberfield',fieldLabel: 'Total Debet',currencySymbol: '',id: 'avr_bs_debet',fieldClass:'number',readOnly:true },
-                            '-',
-                            {xtype:'numberfield',fieldLabel: 'Total Kredit',currencySymbol: '',id: 'avr_bs_kredit',fieldClass:'number',  readOnly:true }
-                        ]
-                        
-                    }
-                ]
-            },{
-                xtype: 'panel',
-                autoShow: true,
-                //                id: 'gridBalanceSheet',
-                region: 'south',
-                margins: '5 5 5 5',
-                layout: 'fit',
-                items:[
-                   { xtype: 'toolbar',
-                     height:40,
-                            padding:'2 0 2 5',
-                            items: ['->',{
-                                    xtype: 'button',
-                                    text: 'Save',
-                                    iconCls: 'icons-add'
+                                width: 250,
+                                //                                locked: true,
+                                hideable: false
                             },{
-                                    xtype: 'button',
-                                    text: 'Cancel / Reset'
+//                                xtype:'numbercolumn',
+                                text: 'Jumlah',
+                                dataIndex: 'jumlah',
+                                sortable: false,
+                                align:'right',
+                                //                                format:'0,0',                                       
+                                width: 100,
+//                                renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+//                                    if(!record.get('cls')){
+//                                        return Ext.util.Format.number(value, '0,000');
+//                                    }else{
+//                                        var str='TOTAL';                                        
+//                                        if(record.get('nama_jenis').substring(0, str.length)==str){                                            
+//                                            return Ext.util.Format.number(value, '0,000');
+//                                        }else{
+//                                            return value;
+//                                        }
+//                                        
+//                                    }
+//                                    
+//                                }
                             }]
+                            },{
+                                text:'PASSIVA',
+                                columns:[
+                                    {
+                                text: 'Jenis',
+                                dataIndex: 'jenis',
+                                sortable: false,
+                                //                                flex:1,
+                                width: 80
+                            },{                               
+                                text: 'Rekening',
+                                dataIndex: 'rekening',
+                                sortable: false,
+                                flex:1,
+                                width: 250,
+                                //                                locked: true,
+                                hideable: false
+                            },{
+//                                xtype:'numbercolumn',
+                                text: 'Jumlah',
+                                dataIndex: 'jumlah',
+                                sortable: false,
+                                align:'right',
+                                //                                format:'0,0',                                       
+                                width: 100,
+//                                renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+//                                    if(!record.get('cls')){
+//                                        return Ext.util.Format.number(value, '0,000');
+//                                    }else{
+//                                        var str='TOTAL';                                        
+//                                        if(record.get('nama_jenis').substring(0, str.length)==str){                                            
+//                                            return Ext.util.Format.number(value, '0,000');
+//                                        }else{
+//                                            return value;
+//                                        }
+//                                        
+//                                    }
+//                                    
+//                                }
+                            }
+                                ]}
+                            
+                        ],                        
+                        tbar:[{xtype: 'button',
+                                text: 'Load Data',
+                                iconCls: 'icon-preview',
+                                handler:function(){
+//                                    if (!Ext.getCmp('incs_thbl').getValue()){
+//                                        set_message(2,'Tahun Bulan Belum Diisi!!!');
+//                                        return;
+//                                    }
+//                                    var vthbl=Ext.Date.format(Ext.getCmp('incs_thbl').getValue(),'Ym');
+//                                    incs_store.load({params:{thbl:vthbl}});
+                
+                                }
+                            }]
+                      
                     }
                 ]
             }

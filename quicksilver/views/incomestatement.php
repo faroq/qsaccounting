@@ -4,56 +4,12 @@ if (!defined('BASEPATH'))
 ?>
 <script type="text/javascript" language="javascript"> 
     
-    var IncomeStatementstore = Ext.create('Ext.data.Store',{
-        //        pageSize: ENDPAGE,
-        autoLoad	: false,
-        autoSync	: false,
-        storeId		: 'mIncomeStatementStore',
-        fields: [ 
-            'rekening','nama_rekening','debet','kredit'
-        ],
-        proxy		: {
-            type: 'ajax',
-            api: {
-                    
-                read    : '<?php echo base_url(); ?>' + 'masteraccount/get_rows'
-		   
-            },
-            actionMethods: {                    
-                read    : 'POST'
-            },
-            reader: {
-                type            : 'json',
-                root            : 'data',
-                rootProperty    : 'data',
-                successProperty : 'success',
-                totalProperty   : 'record'
-                //                    messageProperty : 'message'
-            },
-            writer: {
-                type            : 'json',
-                writeAllFields  : true,
-                root            : 'data',
-                encode          : true
-            },
-            listeners: {
-                exception: function(proxy, response, operation){
-                    Ext.MessageBox.show({
-                        title: 'REMOTE EXCEPTION',
-                        msg: operation.getError(),
-                        icon: Ext.MessageBox.ERROR,
-                        buttons: Ext.Msg.OK
-                    });
-                },
-                loadexception: function(event, options, response, error){
-                    var err = Ext.util.JSON.decode(response.responseText);
-                    if (err.errMsg == 'Session Expired') {
-                        session_expired(err.errMsg);
-                    }
-                }
-            }
-        }
-    });
+    var incsUrl='<?php echo base_url(); ?>' + 'income_statement/get_rows';  
+    var incs_store = createStoreGroup(false,'mincs_store',['jenis','nama_jenis','rekening',
+        {name:'thbl_t', type:'float'},
+        {name:'thbl', type:'float'},
+        'cls'],'jenis',incsUrl);
+    
     Ext.define('MyTabIncomeStatement', {
         extend: 'Ext.container.Container',
         xtype: 'TabIncomeStatement',
@@ -65,9 +21,11 @@ if (!defined('BASEPATH'))
         items: [ {xtype: 'panel',
                 autoShow: true,
                 id: 'panelIncomeStatement',
+                title:'Tahun Bulan Laporan',
                 region: 'north',
                 margins: '5 5 5 5',
                 layout: 'column',
+                collapsible:true,
                 items:[
                     {
                         xtype: 'form',
@@ -78,24 +36,16 @@ if (!defined('BASEPATH'))
                         bodyPadding: '5 5 5 5',
                         defaults: { labelSeparator: ''}
                         ,items :[{
-                
-                                xtype: 'datefield',
-                                name: 'tgl_jurnal',
-                                fieldLabel: 'Tanggal Entry',
-                                anchor: '90%'
-                                //                                ,afterLabelTextTpl: required_css
-                            },{
-                                xtype: 'textfield',
-                                name: 'referensi',
-                                fieldLabel: 'Referensi',
-                                anchor: '90%'
-            
-                            },{
-                                xtype: 'textfield',
-                                name: 'keterangan',
-                                fieldLabel: 'Keterangan',
-                                anchor: '90%'
-            
+                                xtype: 'monthfield',
+                                name: 'incs_thbl',                                        
+                                //                                        vtype:'daterange',
+                                //                                        startDateField:  'gl_tgl_awal',
+                                afterLabelTextTpl: required_css,
+                                fieldLabel: 'Tahun Bulan',
+                                anchor: '90%',
+                                format:'Y-F'
+                                ,id:'incs_thbl'
+                                //                                        ,maxValue:new Date()
                             }]
                     }
                 ]
@@ -111,68 +61,112 @@ if (!defined('BASEPATH'))
                     {
                         xtype:'grid',
                         id:'grid1h',
-                        //                        store: IncomeStatementstore,
-                        //                        stripeRows: true,
-                        //                        loadMask: true,
+                        store: incs_store,
+                        stripeRows: true,
+                        loadMask: true,
                         stateful:true,
                         stateId:'stateGrid',
                         columns:[
                             {
+                                text: 'Jenis',
+                                dataIndex: 'jenis',
+                                sortable: false,
+                                //                                flex:1,
+                                width: 80
+                            },{
+                                text: 'Jenis',
+                                dataIndex: 'nama_jenis',
+                                sortable: false,
+                                //                                locked: true,
+                                //                                flex:1,
+                                width: 150
+                            },{                               
                                 text: 'Rekening',
                                 dataIndex: 'rekening',
                                 sortable: false,
                                 flex:1,
-                                width: 70
-                            }
-                            , {
-                                text: 'Nama Rekening',
-                                dataIndex: 'nama_rekening',
+                                width: 250,
+                                //                                locked: true,
+                                hideable: false
+                            },{
+//                                xtype:'numbercolumn',
+                                text: 'Thbl-1',
+                                dataIndex: 'thbl_t',
                                 sortable: false,
-                                flex:1,
-                                width: 70
-                            }
-                            , {
-                                text: 'Debet',
-                                dataIndex: 'debet',
-                                sortable: false,
-                                flex:1,
-                                width: 70
+                                align:'right',
+                                //                                format:'0,0',                                       
+                                width: 100,
+                                renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+                                    if(!record.get('cls')){
+                                        return Ext.util.Format.number(value, '0,000');
+                                    }else{
+                                        var str='TOTAL';                                        
+                                        if(record.get('nama_jenis').substring(0, str.length)==str){                                            
+                                            return Ext.util.Format.number(value, '0,000');
+                                        }else{
+                                            return value;
+                                        }
+                                        
+                                    }
+                                    
+                                }
                             }
                             ,{
-                                text: 'Kredit',
-                                dataIndex: 'kredit',
+//                                xtype:'numbercolumn',
+                                text: 'Thbl',
+                                dataIndex: 'thbl',
                                 sortable: false,
-                                flex:1,
-                                width: 70
+                                align:'right',
+//                                format:'0,0',
+                                width: 100,
+                                renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+                                    if(!record.get('cls')){
+                                        return Ext.util.Format.number(value, '0,000');
+                                    }else{
+                                        var str='TOTAL';                                        
+                                        if(record.get('nama_jenis').substring(0, str.length)==str){                                            
+                                            return Ext.util.Format.number(value, '0,000');
+                                        }else{
+                                            return value;
+                                        }
+                                    }
+                                    
+                                }
                             }
-                        ]
-                        ,bbar:['->' ,
-                            {xtype: 'numberfield',fieldLabel: 'Total Debet',currencySymbol: '',id: 'avr_is_debet',fieldClass:'number',readOnly:true },
-                            '-',
-                            {xtype:'numberfield',fieldLabel: 'Total Kredit',currencySymbol: '',id: 'avr_is_kredit',fieldClass:'number',  readOnly:true }
-                        ]
-                        
-                    }
-                ]
-            },{
-                xtype: 'panel',
-                autoShow: true,
-                //                id: 'gridIncomeStatement',
-                region: 'south',
-                margins: '5 5 5 5',
-                layout: 'fit',
-                items:[
-                   { xtype: 'toolbar',
-                     height:40,
-                            padding:'2 0 2 5',
-                            items: ['->',{
-                                    xtype: 'button',
-                                    text: 'Save',
-                                    iconCls: 'icons-add'
-                            },{
-                                    xtype: 'button',
-                                    text: 'Cancel / Reset'
+                        ],                        
+                        tbar:[{xtype: 'button',
+                                text: 'Load Data',
+                                iconCls: 'icon-preview',
+                                handler:function(){
+                                    if (!Ext.getCmp('incs_thbl').getValue()){
+                                        set_message(2,'Tahun Bulan Belum Diisi!!!');
+                                        return;
+                                    }
+                                    var vthbl=Ext.Date.format(Ext.getCmp('incs_thbl').getValue(),'Ym');
+                                    incs_store.load({params:{thbl:vthbl}});
+                
+                                }
                             }]
+                        ,features:[{
+                                ftype: 'grouping',
+                                //                                groupHeaderTpl: '{columnName}: {name} ({rows.length} Item{[values.rows.length > 1 ? "s" : ""]})',
+                                groupHeaderTpl: '{name}',
+                                hideGroupedHeader: true,
+                                startCollapsed: false,
+                                enableGroupingMenu: false,
+                                
+                                id: 'incs_grid_Grouping'
+                            }]
+                        ,viewConfig: {
+                            getRowClass: function(record, rowIndex, rp, ds){
+                                                                if(record.get('cls'))
+                                                                {
+                                                                    return record.get('cls');
+                                                                }
+                               
+                            }
+                        }
+                       
                     }
                 ]
             }

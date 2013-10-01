@@ -4,9 +4,12 @@ if (!defined('BASEPATH'))
 ?>
 
 <script type="text/javascript" language="javascript">
-
+    var dept_store = createStore(false,'mdept_store',[
+        'dept','nama_dept'],
+    '<?php echo base_url(); ?>' + 'global_reference/get_dept');
+    
     var mst_account_kel_jenis_store = Ext.create('Ext.data.Store',{
-        autoLoad	: true,
+        autoLoad	: false,
         autoSync	: false,
         storeId		: 'mst_account_kel_jenis_store',
         fields: [
@@ -56,7 +59,7 @@ if (!defined('BASEPATH'))
     });
 
     var mst_account_kel_dk_store = Ext.create('Ext.data.Store',{
-        autoLoad	: true,
+        autoLoad	: false,
         autoSync	: false,
         storeId		: 'mst_account_kel_dk_store',
         fields: [
@@ -106,7 +109,7 @@ if (!defined('BASEPATH'))
     });
 
     var mst_account_store = Ext.create('Ext.data.Store',{
-        autoLoad	: true,
+        autoLoad	: false,
         autoSync	: false,
         storeId		: 'mst_account_store',
         fields: [

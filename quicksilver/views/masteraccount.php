@@ -37,21 +37,21 @@ if (!defined('BASEPATH'))
                 encode          : true
             },
             listeners: {//                {
-                                    exception: function(proxy, response, operation){
-                                        var err = Ext.decode(response.responseText);                    
-                                        if (err.errMsg == 'Session Expired') {
-                                            session_expired(err.errMsg);
-                                        }else{
-                                            set_message(1,err.errMsg);
-                                        }                                       
-                                    }
-                                }
+                exception: function(proxy, response, operation){
+                    var err = Ext.decode(response.responseText);                    
+                    if (err.errMsg == 'Session Expired') {
+                        session_expired(err.errMsg);
+                    }else{
+                        set_message(1,err.errMsg);
+                    }                                       
+                }
+            }
         }
     });
     
     
     var JenisAccountStore = Ext.create('Ext.data.Store',{        
-        autoLoad	: true,
+        autoLoad	: false,
         autoSync	: false,
         storeId		: 'mJenisAccountStore',
         fields: [ 
@@ -82,18 +82,18 @@ if (!defined('BASEPATH'))
                 encode          : true
             },
             listeners: {//                {
-                                    exception: function(proxy, response, operation){
-                                        var err = Ext.decode(response.responseText);                    
-                                        if (err.errMsg == 'Session Expired') {
-                                            session_expired(err.errMsg);
-                                        }else{
-                                            set_message(1,err.errMsg);
-                                        }                                       
-                                    }
-                                }
+                exception: function(proxy, response, operation){
+                    var err = Ext.decode(response.responseText);                    
+                    if (err.errMsg == 'Session Expired') {
+                        session_expired(err.errMsg);
+                    }else{
+                        set_message(1,err.errMsg);
+                    }                                       
+                }
+            }
         }
     });
-    
+    var urlKelompok='<?php echo base_url(); ?>' + 'masteraccount/get_kelompok/""';
     var KelompokAccountStore = Ext.create('Ext.data.Store',{        
         autoLoad	: false,
         autoSync	: false,
@@ -105,7 +105,7 @@ if (!defined('BASEPATH'))
             type: 'ajax',
             api: {
                     
-                read    : '<?php echo base_url(); ?>' + 'masteraccount/get_kelompok'
+                read    : '<?php echo base_url(); ?>' + 'masteraccount/get_kelompok/""'
 		   
             },
             actionMethods: {                    
@@ -126,15 +126,15 @@ if (!defined('BASEPATH'))
                 encode          : true
             },
             listeners: {//                {
-                                    exception: function(proxy, response, operation){
-                                        var err = Ext.decode(response.responseText);                    
-                                        if (err.errMsg == 'Session Expired') {
-                                            session_expired(err.errMsg);
-                                        }else{
-                                            set_message(1,err.errMsg);
-                                        }                                       
-                                    }
-                                }
+                exception: function(proxy, response, operation){
+                    var err = Ext.decode(response.responseText);                    
+                    if (err.errMsg == 'Session Expired') {
+                        session_expired(err.errMsg);
+                    }else{
+                        set_message(1,err.errMsg);
+                    }                                       
+                }
+            }
         }
     });  
     
@@ -180,9 +180,9 @@ if (!defined('BASEPATH'))
                         select: function(combo, records) {
                             var jenisValue = this.getValue();
                             var cmbkelompok=Ext.getCmp('macc_kelompok');
-                            cmbkelompok.setValue();  
+                            cmbkelompok.setValue('');  
                             cmbkelompok.store.proxy.api.read='<?php echo base_url(); ?>' + 'masteraccount/get_kelompok/'+jenisValue;
-                            cmbkelompok.store.reload();
+                            cmbkelompok.store.load();
                             
                         }
                     }
@@ -193,23 +193,18 @@ if (!defined('BASEPATH'))
                     afterLabelTextTpl: required_css,
                     fieldLabel: 'Kelompok',                        
                     id: 'macc_kelompok',
+                    mode:'local',
                     store: KelompokAccountStore,
                     valueField: 'kelompok',
                     displayField: 'nama_kelompok',
                     typeAhead: true,
                     triggerAction: 'all',                    
-                    // allowBlank: false,
+                    allowBlank: false,
                     editable: false,
                     anchor: '90%',
                     hiddenName: 'kelompok',
-                    emptyText: 'Nama Kelompok',
-                    listeners: {
-                        select: function(combo, records) {
-                            var kelValue = this.getValue();
-                            var txtrekening=Ext.getCmp('macc_rekening');
-                            txtrekening.setValue(kelValue + '.');  
-                        }
-                    }
+                    emptyText: 'Nama Kelompok'
+               
                 },
                 {
                     name: 'rekening',
@@ -262,8 +257,8 @@ if (!defined('BASEPATH'))
             Ext.getCmp('FormMacc_id').getForm().submit({
                 url: this.url,
                 scope: this,
-//                success: this.onSuccess,
-//                failure: this.onFailure,
+                //                success: this.onSuccess,
+                //                failure: this.onFailure,
                 params: {
                     cmd: parcmd,
                     jenis: pjenis,
@@ -271,19 +266,19 @@ if (!defined('BASEPATH'))
                 },
                 waitMsg: 'Saving Data...',
                 success: function(form, action) {
-//                    console.log(action);
+                    //                    console.log(action);
                     set_message(0,action.result.msg);
-//                    Ext.Msg.alert('Success', action.result.msg);
+                    //                    Ext.Msg.alert('Success', action.result.msg);
                     Ext.getCmp('gridid').store.reload(); 
                     Ext.getCmp('FormMacc_id').getForm().reset();
                     Ext.getCmp('WindowMacc_id').close();
                 },
                 failure: function(form, action) {
                     if(action.result.msg=='Session Expired') {
-                                            session_expired(action.result.msg);
-                                        }else{
-                                            set_message(1, action.result.msg);
-                                        }
+                        session_expired(action.result.msg);
+                    }else{
+                        set_message(1, action.result.msg);
+                    }
                                             
                     
                 }
@@ -375,7 +370,10 @@ if (!defined('BASEPATH'))
                                             Ext.getCmp('macc_rekening').setFieldStyle('readonly-input');
                                             Ext.getCmp('macc_rekening').setValue(rec.get('rekening'));
                                             Ext.getCmp('macc_namarekening').setValue(rec.get('nama_rekening'));
-                                            Ext.getCmp('macc_jenis').setValue(rec.get('jenis'));
+                                            var jenisval=rec.get('jenis');
+                                            Ext.getCmp('macc_jenis').setValue(jenisval);
+                                            Ext.getCmp('macc_kelompok').store.proxy.api.read='<?php echo base_url(); ?>' + 'masteraccount/get_kelompok/'+jenisval;
+                                            Ext.getCmp('macc_kelompok').store.load();
                                             Ext.getCmp('macc_kelompok').setValue(rec.get('kelompok'));
                                             winmacc.show();
                                             //                                            Ext.Msg.alert('Edit', 'Edit ' + rec.get('rekening'));
@@ -412,7 +410,7 @@ if (!defined('BASEPATH'))
                                                             success: function(obj) {
                                                                 var   resp = Ext.decode(obj.responseText);                                                                
                                                                 if(resp.success==true){
-//                                                                    Ext.Msg.alert('info',resp.msg);
+                                                                    //                                                                    Ext.Msg.alert('info',resp.msg);
                                                                     set_message(0,resp.msg);
                                                                     Ext.getCmp('gridid').store.reload();                                                                                                                                     
                                                                 }else{
@@ -434,26 +432,26 @@ if (!defined('BASEPATH'))
                                                                 var  resp = Ext.decode(obj.responseText);
                                                                 Ext.Msg.alert('info',resp.reason);
                                                             }
-//                                                            ,
-//                                                            callback:function(opt,success,responseObj){
-//                                                                var de = Ext.util.JSON.decode(responseObj.responseText);
-//                                                                if(de.success==true){
-//                                                                    Ext.getCmp('gridid').store.reload();                                                                                                                                     
-//                                                                }else{
-//                                                                    Ext.Msg.show({
-//                                                                        title: 'Error',
-//                                                                        msg: de.errMsg,
-//                                                                        modal: true,
-//                                                                        icon: Ext.Msg.ERROR,
-//                                                                        buttons: Ext.Msg.OK,
-//                                                                        fn: function(btn){
-//                                                                            if (btn == 'ok' && de.errMsg == 'Session Expired') {
-//                                                                                window.location = '<?= site_url("auth/login") ?>';
-//                                                                            }
-//                                                                        }
-//                                                                    });
-//                                                                }
-//                                                            }
+                                                            //                                                            ,
+                                                            //                                                            callback:function(opt,success,responseObj){
+                                                            //                                                                var de = Ext.util.JSON.decode(responseObj.responseText);
+                                                            //                                                                if(de.success==true){
+                                                            //                                                                    Ext.getCmp('gridid').store.reload();                                                                                                                                     
+                                                            //                                                                }else{
+                                                            //                                                                    Ext.Msg.show({
+                                                            //                                                                        title: 'Error',
+                                                            //                                                                        msg: de.errMsg,
+                                                            //                                                                        modal: true,
+                                                            //                                                                        icon: Ext.Msg.ERROR,
+                                                            //                                                                        buttons: Ext.Msg.OK,
+                                                            //                                                                        fn: function(btn){
+                                                            //                                                                            if (btn == 'ok' && de.errMsg == 'Session Expired') {
+                                                            //                                                                                window.location = '<?= site_url("auth/login") ?>';
+                                                            //                                                                            }
+                                                            //                                                                        }
+                                                            //                                                                    });
+                                                            //                                                                }
+                                                            //                                                            }
                                                         });                 
                                                     } 
                                                 }
@@ -517,7 +515,7 @@ if (!defined('BASEPATH'))
                                         winmacc.setTitle('Add Form');
                                         Ext.getCmp('btn_macc_simpan').setText('Simpan');
                                         Ext.getCmp('btn_macc_simpan').setIconCls('icons-add');
-                                        
+                                        setDefaultStoreProxy(KelompokAccountStore, urlKelompok);
                                         winmacc.show();
                                     }
                                     //                                    ,action: 'add'
@@ -545,9 +543,10 @@ if (!defined('BASEPATH'))
         ],
         listeners:{
             show:function(){
-                var storegrid=Ext.getCmp('gridid').store;
+                var storegrid=Ext.getCmp('gridid').store;                
                 storegrid.loadPage(1);
-                    
+                JenisAccountStore.load();
+                //                KelompokAccountStore.load();    
                 
             }
         }

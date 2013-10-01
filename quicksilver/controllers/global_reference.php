@@ -28,6 +28,11 @@ class global_reference extends MY_Controller {
         echo $result;
     }
 
+    public function get_dept()
+    {
+        $result = $this->global_reference_model->get_dept();
+        echo $result;
+    }
     public function get_mst_account()
     {
         $result = $this->global_reference_model->get_mst_account();

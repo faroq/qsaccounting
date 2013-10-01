@@ -16,56 +16,7 @@ if (!defined('BASEPATH'))
         {name:'debet_nr', type:'float'},
         {name:'kredit_nr', type:'float'},
         'cls'],'jenis',tbUrl);
-    var tb_store1 = Ext.create('Ext.data.Store',{
-        //        pageSize: ENDPAGE,
-        autoLoad	: false,
-        autoSync	: false,
-        storeId		: 'mTrialBalanceStore',
-        fields: [ 
-            'jenis','kelompok','rekening','debet_awal','kredit_awal','mutasi_d','mutasi_k','debet_akhir','kredit_akhir','cls'
-        ],
-        proxy		: {
-            type: 'ajax',
-            api: {
-                    
-                read    : tbUrl
-		   
-            },
-            actionMethods: {                    
-                read    : 'POST'
-            },
-            reader: {
-                type            : 'json',
-                root            : 'data',
-                rootProperty    : 'data',
-                successProperty : 'success',
-                totalProperty   : 'record'
-                //                    messageProperty : 'message'
-            },
-            writer: {
-                type            : 'json',
-                writeAllFields  : true,
-                root            : 'data',
-                encode          : true
-            },
-            listeners: {
-                exception: function(proxy, response, operation){
-                    Ext.MessageBox.show({
-                        title: 'REMOTE EXCEPTION',
-                        msg: operation.getError(),
-                        icon: Ext.MessageBox.ERROR,
-                        buttons: Ext.Msg.OK
-                    });
-                },
-                loadexception: function(event, options, response, error){
-                    var err = Ext.util.JSON.decode(response.responseText);
-                    if (err.errMsg == 'Session Expired') {
-                        session_expired(err.errMsg);
-                    }
-                }
-            }
-        }
-    });
+    
     Ext.define('MyTabTrialBalance', {
         extend: 'Ext.container.Container',
         xtype: 'TabTrialBalance',
@@ -74,7 +25,9 @@ if (!defined('BASEPATH'))
         id: 'tab1g',
         closable: true,        
         layout: 'border',
-        items: [ {xtype: 'panel',title:'Tahun Bulan Laporan',
+        items: [ 
+            {xtype: 'panel',
+                title:'Tahun Bulan Laporan',
                 autoShow: true,
                 id: 'panelTrialBalance',
                 region: 'north',
@@ -116,38 +69,38 @@ if (!defined('BASEPATH'))
                     {
                         xtype:'grid',
                         id:'grid1g',
-                                                store: tb_store,
-                                                stripeRows: true,
-                                                loadMask: true,
+                        store: tb_store,
+                        stripeRows: true,
+                        loadMask: true,
                         stateful:true,
-//                        stateId:'stateGrid',
+                        //                        stateId:'stateGrid',
                         autoScroll:true,
                         columnLines:true,                        
                         columns:[
-                             {
+                            {
                                 text: 'Jenis',
                                 dataIndex: 'jenis',
                                 sortable: false,
-//                                flex:1,
+                                //                                flex:1,
                                 width: 80
                             },
-//                            {
-//                                text: 'Kelompok',
-//                                dataIndex: 'kelompok',
-//                                sortable: false,
-////                                flex:1,
-//                                width: 120
-//                            },                           
+                            //                            {
+                            //                                text: 'Kelompok',
+                            //                                dataIndex: 'kelompok',
+                            //                                sortable: false,
+                            ////                                flex:1,
+                            //                                width: 120
+                            //                            },                           
                             {                               
                                 text: 'Rekening',
                                 dataIndex: 'rekening',
                                 sortable: false,
-//                                flex:1,
+                                //                                flex:1,
                                 width: 250,
                                 locked: true,
                                 hideable: false
                             }
-                           ,{
+                            ,{
                                 text:'Saldo Awal',
                                 columns: [{
                                         xtype:'numbercolumn',
@@ -176,7 +129,7 @@ if (!defined('BASEPATH'))
                                         sortable: false,
                                         align:'right',
                                         format:'0,0',
-                                       width: 100
+                                        width: 100
                                     }
                                     ,{
                                         xtype:'numbercolumn',
@@ -217,9 +170,9 @@ if (!defined('BASEPATH'))
                                         sortable: false,
                                         align:'right',
                                         format:'0,0',
-//                                        summaryType: 'sum',
+                                        //                                        summaryType: 'sum',
 
-//                                        flex:1,
+                                        //                                        flex:1,
                                         width: 100
                                     }
                                     ,{
@@ -229,9 +182,9 @@ if (!defined('BASEPATH'))
                                         sortable: false,
                                         align:'right',
                                         format:'0,0',
-//                                        summaryType: 'sum',
+                                        //                                        summaryType: 'sum',
 
-//                                        flex:1,
+                                        //                                        flex:1,
                                         width: 100
                                     }]
                             },{
@@ -243,9 +196,9 @@ if (!defined('BASEPATH'))
                                         sortable: false,
                                         align:'right',
                                         format:'0,0',
-//                                        summaryType: 'sum',
+                                        //                                        summaryType: 'sum',
 
-//                                        flex:1,
+                                        //                                        flex:1,
                                         width: 100
                                     }
                                     ,{
@@ -255,9 +208,9 @@ if (!defined('BASEPATH'))
                                         sortable: false,
                                         align:'right',
                                         format:'0,0',
-//                                        summaryType: 'sum',
+                                        //                                        summaryType: 'sum',
 
-//                                        flex:1,
+                                        //                                        flex:1,
                                         width: 100
                                         
                                     }]
@@ -277,7 +230,7 @@ if (!defined('BASEPATH'))
                 
                                 }
                             }]
-                            ,features:[{
+                        ,features:[{
                                 ftype: 'grouping',
                                 //                                groupHeaderTpl: '{columnName}: {name} ({rows.length} Item{[values.rows.length > 1 ? "s" : ""]})',
                                 groupHeaderTpl: '{name}',
@@ -287,7 +240,7 @@ if (!defined('BASEPATH'))
                                 
                                 id: 'tb_grid_Grouping'
                             }]
-                            ,viewConfig: {
+                        ,viewConfig: {
                             getRowClass: function(record, rowIndex, rp, ds){
                                 if(record.get('cls'))
                                 {

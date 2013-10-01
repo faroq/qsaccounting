@@ -5,7 +5,7 @@ if (!defined('BASEPATH'))
 
 <script type="text/javascript" language="javascript"> 
     
-    var journalMonitor_store = createStore(false,'jmon_store',['id_jurnal','nomor_jurnal','tgl_jurnal',{name: 'referensi', type: 'string'},'keterangan','transaksi_cd','rekening','nama_rekening','debet','kredit','jurnal_by','jurnal_date','update_date'],'<?php echo base_url(); ?>' + 'jurnal_monitor/get_row_monitor');
+    var journalMonitor_store = createStore(false,'jmon_store',['id_jurnal','nomor_jurnal','tgl_jurnal',{name: 'referensi', type: 'string'},'keterangan','transaksi_cd','rekening','nama_rekening','debet','kredit','kode_posting','jurnal_by','jurnal_date','update_date'],'<?php echo base_url(); ?>' + 'jurnal_monitor/get_row_monitor');
     //    var jmon_account_store = createStore(true,'jmon_account_store',['rekening','nama_rekening'],'<?php echo base_url(); ?>' + 'masteraccount/get_rows');
 
   
@@ -219,10 +219,11 @@ if (!defined('BASEPATH'))
                                 dataIndex: 'jurnal_date',
                                 sortable: true,
                                 width: 70
-                            }, {
-                                dataIndex: 'visible',
-                                text: 'Visible'
-                                // this column's filter is defined in the filters feature config
+                            },{
+                                header: "Kode Posting",
+                                dataIndex: 'kode_posting',
+                                sortable: true,
+                                width: 100
                             }
                         ],
                         tbar:{
@@ -299,8 +300,11 @@ if (!defined('BASEPATH'))
             {
             show:function()
             {
+                var parquery=new Array();
+               parquery.push({name:'tgl_awal',value:Ext.Date.format(new Date(), 'Y-m-d')});
+                parquery.push({name:'tgl_akhir',value:Ext.Date.format(new Date(), 'Y-m-d')});
                 var storegrid=Ext.getCmp('jmon_grid').store;
-                storegrid.loadPage(1);
+                storegrid.load({params:{query:Ext.JSON.encode(parquery)}});
             }
         }, 
         initComponent: function()
