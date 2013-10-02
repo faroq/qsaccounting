@@ -125,6 +125,7 @@ class base_report extends MY_Controller {
             'rekening' => 'Sub Total',
             'debet_awal' => $total_d_awal, 'kredit_awal' => $total_k_awal,
             'mutasi_d' => $total_md, 'mutasi_k' => $total_mk,
+            'debet_akhir' => $total_d_akhir, 'kredit_akhir' => $total_k_akhir,
             'debet_rl' => $total_d_rl, 'kredit_rl' => $total_k_rl,
             'debet_nr' => $total_d_nr, 'kredit_nr' => $total_k_nr,
             'cls' => 'x-hira-header'));
@@ -144,13 +145,37 @@ class base_report extends MY_Controller {
         }elseif ($total_d_nr<$total_k_nr){
             $d_nr=$total_k_nr-$total_d_nr;
         }
+        $sel_d_awal=0;
+        $sel_k_awal=0;
+        $sel_d_mut=0;
+        $sel_k_mut=0;
+        $sel_d_akhir=0;
+        $sel_k_akhir=0;
+        if ($total_d_awal>$total_k_awal){
+            $sel_k_awal=$total_d_awal-$total_k_awal;
+        }elseif($total_d_awal<$total_k_awal){
+            $sel_d_awal=$total_k_awal-$total_d_awal;
+        }
+        
+        if ($total_md>$total_mk){
+            $sel_k_mut=$total_md-$total_mk;
+        }elseif($total_md<$total_mk){
+            $sel_d_mut=$total_mk-$total_md;
+        }
+        
+        if ($total_d_akhir>$total_k_akhir){
+            $sel_k_akhir=$total_d_akhir-$total_k_akhir;
+        }elseif($total_d_akhir<$total_k_akhir){
+            $sel_d_akhir=$total_k_akhir-$total_d_akhir;
+        }
         
         array_push($resArr, array(
             'jenis' => $maxjenis . '-Total',
 //                    'kelompok'=>$h->kelompok.'-'.$h->nama_kelompok,
             'rekening' => 'Rugi Laba',
-            'debet_awal' => NULL, 'kredit_awal' => NULL,
-            'mutasi_d' => NULL, 'mutasi_k' => NULL,
+            'debet_awal' => $sel_d_awal, 'kredit_awal' => $sel_k_awal,
+            'mutasi_d' => $sel_d_mut, 'mutasi_k' => $sel_k_mut,
+            'debet_akhir' => $sel_d_akhir, 'kredit_akhir' => $sel_k_akhir,
             'debet_rl' => $d_lr, 'kredit_rl' => $k_lr,
             'debet_nr' => $d_nr, 'kredit_nr' => $k_nr,
             'cls' => 'x-hira-header'));
@@ -158,8 +183,9 @@ class base_report extends MY_Controller {
             'jenis' => $maxjenis . '-Total',
 //                    'kelompok'=>$h->kelompok.'-'.$h->nama_kelompok,
             'rekening' => 'Total',
-            'debet_awal' => $total_d_awal, 'kredit_awal' => $total_k_awal,
-            'mutasi_d' => $total_md, 'mutasi_k' => $total_mk,
+            'debet_awal' => $total_d_awal+$sel_d_awal, 'kredit_awal' => $total_k_awal+$sel_k_awal,
+            'mutasi_d' => $total_md+$sel_d_mut, 'mutasi_k' => $total_mk+$sel_k_mut,
+             'debet_akhir' => $total_d_akhir+$sel_d_akhir, 'kredit_akhir' => $total_k_akhir+$sel_k_akhir,
             'debet_rl' => $total_d_rl+$d_lr, 'kredit_rl' => $total_k_rl+$k_lr,
             'debet_nr' => $total_d_nr+$d_nr, 'kredit_nr' => $total_k_nr+$k_nr,
             'cls' => 'x-hira-header'));
