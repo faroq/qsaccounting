@@ -18,6 +18,7 @@
     color: #555;
     padding-bottom:5px;
     border-bottom:1px solid #C3D0DF;
+    
 }
 #start-div p {
     margin: 10px 0;
@@ -58,6 +59,14 @@
     background-image:url('../images/icons/refresh.gif')!important;
 }
 
+.icon-cancel{
+    background-image:url('../images/icons/cross.gif')!important;
+}
+
+.icon-list-accept{
+    background-image:url('../images/icons/list_accept.png')!important;
+}
+
 .icon-simpan{
     background-image:url('../images/icons/save.gif')!important;
 }
@@ -69,6 +78,14 @@
 }
 .icon-preview{
     background-image:url('../images/icons/application_view_list.png')!important;
+
+}
+.icon-user-delete{
+    background-image:url('../images/icons/user_delete.png')!important;
+
+}
+.icon-key{
+    background-image:url('../images/icons/key.png')!important;
 
 }
 

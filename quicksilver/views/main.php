@@ -14,52 +14,52 @@ $this->load->view('incomestatement');
 $this->load->view('balancesheet');
 $this->load->view('masterpostingaccount');
 $this->load->view('masterpostingbiaya');
-
+$this->load->view('userman/userman');
 ?>
 <script type="text/javascript" language="javascript">
     //    Ext.require(['*']);
     Ext.onReady(function() {
-         Ext.apply(Ext.form.field.VTypes, {
-        daterange: function(val, field) {
-            var date = field.parseDate(val);
+        Ext.apply(Ext.form.field.VTypes, {
+            daterange: function(val, field) {
+                var date = field.parseDate(val);
 
-            if (!date) {
-                return false;
-            }
-            if (field.startDateField && (!this.dateRangeMax || (date.getTime() != this.dateRangeMax.getTime()))) {
-                var start = field.up('form').down('#' + field.startDateField);
-                start.setMaxValue(date);
-                start.validate();
-                this.dateRangeMax = date;
-            }
-            else if (field.endDateField && (!this.dateRangeMin || (date.getTime() != this.dateRangeMin.getTime()))) {
-                var end = field.up('form').down('#' + field.endDateField);
-                end.setMinValue(date);
-                end.validate();
-                this.dateRangeMin = date;
-            }
-            /*
-             * Always return true since we're only using this vtype to set the
-             * min/max allowed values (these are tested for after the vtype test)
-             */
-            return true;
-        },
+                if (!date) {
+                    return false;
+                }
+                if (field.startDateField && (!this.dateRangeMax || (date.getTime() != this.dateRangeMax.getTime()))) {
+                    var start = field.up('form').down('#' + field.startDateField);
+                    start.setMaxValue(date);
+                    start.validate();
+                    this.dateRangeMax = date;
+                }
+                else if (field.endDateField && (!this.dateRangeMin || (date.getTime() != this.dateRangeMin.getTime()))) {
+                    var end = field.up('form').down('#' + field.endDateField);
+                    end.setMinValue(date);
+                    end.validate();
+                    this.dateRangeMin = date;
+                }
+                /*
+                 * Always return true since we're only using this vtype to set the
+                 * min/max allowed values (these are tested for after the vtype test)
+                 */
+                return true;
+            },
 
-        daterangeText: 'Start date must be less than end date',
+            daterangeText: 'Start date must be less than end date',
 
-        password: function(val, field) {
-            if (field.initialPassField) {
-                var pwd = field.up('form').down('#' + field.initialPassField);
-                return (val == pwd.getValue());
-            }
-            return true;
-        },
+            password: function(val, field) {
+                if (field.initialPassField) {
+                    var pwd = field.up('form').down('#' + field.initialPassField);
+                    return (val == pwd.getValue());
+                }
+                return true;
+            },
 
-        passwordText: 'Passwords do not match'
-    });
-//        Ext.util.Format.thousandSeparator = ',';
-//        Ext.util.Format.decimalSeparator = '.';
-//        var required = '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>'
+            passwordText: 'Passwords do not match'
+        });
+        //        Ext.util.Format.thousandSeparator = ',';
+        //        Ext.util.Format.decimalSeparator = '.';
+        //        var required = '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>'
         var treedata = new Ext.data.TreeStore({
             root: {
                 expanded: true
@@ -82,33 +82,33 @@ $this->load->view('masterpostingbiaya');
                 
             }catch(ex){                
                 tabs.add({
-                id: vid,
-                title: vtitle,                
-                //                                iconCls: 'tabs',
-                html: vhtml ,
-//                items:[tabchilds],
-                closable: true
-            }).show();
+                    id: vid,
+                    title: vtitle,                
+                    //                                iconCls: 'tabs',
+                    html: vhtml ,
+                    //                items:[tabchilds],
+                    closable: true
+                }).show();
             }  
-//            var tc=Ext.createWidget(widgetname); 
-//            console.log(widgetname);
-//          var tabchilds=Ext.getCmp(vid);        
-//            if (tabchilds == null){
-//            
-//                tabs.add({
-//                id: vid,
-//                title: vtitle,                
-//                //                                iconCls: 'tabs',
-//                html: vhtml ,
-////                items:[tabchilds],
-//                closable: true
-//            }).show();
-//                
-//            }else{                   
-//                
-//                tabs.add(tm);
-//                tm.show();
-//            }
+            //            var tc=Ext.createWidget(widgetname); 
+            //            console.log(widgetname);
+            //          var tabchilds=Ext.getCmp(vid);        
+            //            if (tabchilds == null){
+            //            
+            //                tabs.add({
+            //                id: vid,
+            //                title: vtitle,                
+            //                //                                iconCls: 'tabs',
+            //                html: vhtml ,
+            ////                items:[tabchilds],
+            //                closable: true
+            //            }).show();
+            //                
+            //            }else{                   
+            //                
+            //                tabs.add(tm);
+            //                tm.show();
+            //            }
             
         }
         var treePanel = new Ext.tree.Panel({
@@ -174,56 +174,56 @@ $this->load->view('masterpostingbiaya');
                 }
             ]
             ,plugins: Ext.create('Ext.ux.TabCloseMenu', {
-//                    extraItemsTail: [
-//                '-',
-//                {
-//                    text: 'Closable',
-//                    checked: true,
-//                    hideOnClick: true,
-//                    handler: function (item) {
-//                        currentItem.tab.setClosable(item.checked);
-//                    }
-//                }
-//            ],
-//            listeners: {
-//                aftermenu: function () {
-//                    currentItem = null;
-//                },
-//                beforemenu: function (menu, item) {
-//                    var menuitem = menu.child('*[text="Closable"]');
-//                    currentItem = item;
-//                    menuitem.setChecked(item.closable);
-//                }
-//            }
+                //                    extraItemsTail: [
+                //                '-',
+                //                {
+                //                    text: 'Closable',
+                //                    checked: true,
+                //                    hideOnClick: true,
+                //                    handler: function (item) {
+                //                        currentItem.tab.setClosable(item.checked);
+                //                    }
+                //                }
+                //            ],
+                //            listeners: {
+                //                aftermenu: function () {
+                //                    currentItem = null;
+                //                },
+                //                beforemenu: function (menu, item) {
+                //                    var menuitem = menu.child('*[text="Closable"]');
+                //                    currentItem = item;
+                //                    menuitem.setChecked(item.closable);
+                //                }
+                //            }
             })
             
         });
     
         var viewport = new Ext.Viewport({
             layout: {
-                type: 'border',
-//                padding: 5
+                type: 'border'
+                //                padding: 5
             },
             defaults: {
                 split: true
             },
             items: [{
                     region: 'north',
-//                    xtype:'box',
+                    //                    xtype:'box',
                     collapsible: false,
                     //            title: 'North',
-//                    border:false,
+                    //                    border:false,
                     id:'header-north',
-//                    style: 'background: blue;',
+                    //                    style: 'background: blue;',
                     cls:'header-north',
-//                    margins: '2 2 0 2',
+                    //                    margins: '2 2 0 2',
                     split: false,
                     height: 70,
                     minHeight: 40,
                     html: '<div id="header-north"><img src="'+'<?php echo base_url(); ?>'+'/assets/images/bgheader.png" class="stretch" alt="" /></div>'
-//                    ,bbar:
+                    //                    ,bbar:
                 }
-                            ,{
+                ,{
                     region: 'west',
                     collapsible: true,
                     title: 'Main Menu',
@@ -244,16 +244,23 @@ $this->load->view('masterpostingbiaya');
                     margins: '2 5 5 0',
                     items: [
                         {
-//                           
+                            //                           
                             region: 'north',
                             xtype: 'toolbar',                           
-//                            cls:'my_toolbar',                            //                           
+                            //                            cls:'my_toolbar',                            //                           
                             items: ['->',
-                                    {
+                                {
                                         
                                     xtype:'label',  
-//                                    cls:'label-color',
-                                    html: 'Welcome <b><?= strtoupper($username) ?></b>, you are login as a <b><?= strtoupper($jabatan) ?></b>&nbsp;&nbsp;'
+                                    //                                    cls:'label-color',
+                                    html: 'Welcome <b><?= strtoupper($username) ?></b>, you are login as a <b><?= ucwords(strtolower($rolename)) ?></b>&nbsp;&nbsp;'
+                                },'-',' '
+                                ,{
+                                    text:'<b>Change Password</b>',
+                                    scope:this,
+                                    cls:'log_out',
+                                    iconCls: 'icon-key'
+                                    ,handler: do_update_pwd
                                 },'-',' '
                                 ,{
                                     text:'<b>Logout</b>',
@@ -263,7 +270,7 @@ $this->load->view('masterpostingbiaya');
                                     ,handler: doLogout
                                 },' '                                    
                             ]
-                            },
+                        },
                         {
                             xtype   : 'container',
                             region  : 'center',
@@ -273,37 +280,37 @@ $this->load->view('masterpostingbiaya');
                     //            bbar: []
                 },
         
-            {
-                id      : 'appFooter',
-                xtype   : 'box',
-                region  : 'south',
-                height  : 20,
-                split: false,
-                html    : '<center>Develop By PT. Solusi Informatika Semesta</center>'
-            }
-//                ,{
-//                    region: 'east',
-//                    collapsible: true,
-//                    floatable: true,
-//                    split: true,
-//                    width: 200,
-//                    minWidth: 120,
-//                    minHeight: 140,
-//                    title: 'East',
-//                    layout: {
-//                        type: 'vbox',
-//                        padding: 5,
-//                        align: 'stretch'
-//                    },
-//                    items: [{
-//                            xtype: 'textfield',
-//                            labelWidth: 70,
-//                            fieldLabel: 'Text field'
-//                        }, {
-//                            xtype: 'component',
-//                            html: 'I am floatable'
-//                        }]
-//                }
+                {
+                    id      : 'appFooter',
+                    xtype   : 'box',
+                    region  : 'south',
+                    height  : 20,
+                    split: false,
+                    html    : '<center>Develop By PT. Solusi Informatika Semesta</center>'
+                }
+                //                ,{
+                //                    region: 'east',
+                //                    collapsible: true,
+                //                    floatable: true,
+                //                    split: true,
+                //                    width: 200,
+                //                    minWidth: 120,
+                //                    minHeight: 140,
+                //                    title: 'East',
+                //                    layout: {
+                //                        type: 'vbox',
+                //                        padding: 5,
+                //                        align: 'stretch'
+                //                    },
+                //                    items: [{
+                //                            xtype: 'textfield',
+                //                            labelWidth: 70,
+                //                            fieldLabel: 'Text field'
+                //                        }, {
+                //                            xtype: 'component',
+                //                            html: 'I am floatable'
+                //                        }]
+                //                }
             ]
             //        ,
             //        listeners:
@@ -316,25 +323,32 @@ $this->load->view('masterpostingbiaya');
     });
     
     function doLogout(){
-                            Ext.Msg.show({
-                                title: 'Konfirmasi',
-                                msg: 'Are you sure to Logout?',
-                                buttons: Ext.Msg.YESNO,
-                                icon: Ext.Msg.QUESTION,
-                                fn: function(btn){
-                                    if (btn == 'yes') {
-                                        Ext.Ajax.request({
-                                            url: '<?= site_url("auth/logout") ?>',
-                                            method: 'POST',
-                                            success: function(xhr){
-                                                window.location = '<?= site_url("auth/login") ?>';
-                                            }
-                                        });
-                                    }
-                                }
-                            });
-            
+        Ext.Msg.show({
+            title: 'Konfirmasi',
+            msg: 'Are you sure to Logout?',
+            buttons: Ext.Msg.YESNO,
+            icon: Ext.Msg.QUESTION,
+            fn: function(btn){
+                if (btn == 'yes') {
+                    Ext.Ajax.request({
+                        url: '<?= site_url("auth/logout") ?>',
+                        method: 'POST',
+                        success: function(xhr){
+                            window.location = '<?= site_url("auth/login") ?>';
                         }
+                    });
+                }
+            }
+        });
+            
+    }
+    function do_update_pwd(){
+        var winuppwd=Ext.create('update_password_win');
+        var param_user_id= '<?= $username ?>';
+        Ext.getCmp('update_user_id').setValue(param_user_id);    
+//        Ext.getCmp('update_lama_password').setValue(rec.get('user_id'));
+        winuppwd.show();
+    }
 </script>
 </head>
 <body>

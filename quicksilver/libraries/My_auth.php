@@ -97,8 +97,8 @@ class My_auth
 	public function logout()
 	{
 		$this->ci->session->unset_userdata('username');
-		$this->ci->session->unset_userdata('jabatan');
-		$this->ci->session->unset_userdata('departement');
+		$this->ci->session->unset_userdata('rolename');
+//		$this->ci->session->unset_userdata('departement');
 		$this->ci->session->unset_userdata('roleid');	
 		$this->ci->session->sess_destroy();
 

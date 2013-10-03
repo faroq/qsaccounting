@@ -22,8 +22,8 @@ class main extends MY_Controller {
 
     public function index() {
         $data['username'] = $this->session->userdata('username');
-	$data['jabatan'] = $this->session->userdata('jabatan');
-        $data['departement']= $this->session->userdata('departement');
+	$data['rolename'] = $this->session->userdata('rolename');
+//        $data['departement']= $this->session->userdata('departement');
         $data['roleid']= $this->session->userdata('roleid');
 //        $roleid =$this->session->userdata('roleid');
 //	$accordion_menu = $this->my_auth->get_accordion_menu($this->session->userdata('kd_group'));
@@ -87,10 +87,13 @@ class main extends MY_Controller {
         return $resArr;
     }
     
-    public function getMainMenu() {       
-        $roleid = ($this->input->post('roleid', TRUE) ? $this->input->post('roleid', TRUE) : "1");
+    public function getMainMenu() {     
+        $roleid = isset($_GET['roleid']) ? $this->db->escape_str($this->input->get('roleid', TRUE)) :  0;
+      
+//        $roleid = ($this->input->post('roleid', TRUE) ? $this->input->post('roleid', TRUE) : FALSE);
         $head = $this->loadmenu->get_menu_head($roleid);
         $child = $this->loadmenu->get_menu_child($roleid);
+        
         $resArr=array();
         $resArr = $this->get_max_level($head, $child);
         echo json_encode($resArr);

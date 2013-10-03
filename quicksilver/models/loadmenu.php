@@ -43,6 +43,7 @@ class loadmenu extends CI_Model {
         $this->db->where('role_id', $roleid);
         $this->db->where('isheader', true);
         $this->db->where('parentmenu', '0');
+        $this->db->order_by('idmenu','asc');
         $query=$this->db->get('v_acc_rolemenu');        
         return $query->result();
     }
@@ -51,6 +52,7 @@ class loadmenu extends CI_Model {
         $sqlwhere="parentmenu <> '0'";
         $this->db->where('role_id', $roleid);
         $this->db->where($sqlwhere,NULL);
+        $this->db->order_by('idmenu','asc');
         $query=$this->db->get('v_acc_rolemenu');        
         return $query->result();
     }

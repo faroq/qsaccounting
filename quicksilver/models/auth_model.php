@@ -60,8 +60,8 @@ class Auth_model extends CI_Model {
 
                 $session_data = array(
                     'username' => $result->user_id,                    
-                    'jabatan' => $result->jabatan,
-                    'departement' => $result->departement,
+                    'rolename' => $result->role_name,
+//                    'departement' => $result->departement,
                     'roleid' => $result->role_id                  
                 );
 //                $sesdata=  json_encode($session_data);
