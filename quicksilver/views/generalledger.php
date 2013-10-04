@@ -13,7 +13,7 @@ if (!defined('BASEPATH'))
         xtype: 'TabGeneralLedger',
         alias: 'widget.TabGeneralLedger',
         title: 'General Ledger',
-        id: 'tab1f',
+        id: 'tab1g',
         closable: true,        
         layout: 'border',
         items: [ {xtype: 'panel',

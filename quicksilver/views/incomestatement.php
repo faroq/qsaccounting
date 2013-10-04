@@ -15,7 +15,7 @@ if (!defined('BASEPATH'))
         xtype: 'TabIncomeStatement',
         alias: 'widget.TabIncomeStatement',
         title: 'Income Statement',
-        id: 'tab1h',
+        id: 'tab1i',
         closable: true,        
         layout: 'border',
         items: [ {xtype: 'panel',

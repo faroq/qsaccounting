@@ -23,7 +23,7 @@ if (!defined('BASEPATH'))
         xtype: 'TabBalanceSheet',
         alias: 'widget.TabBalanceSheet',
         title: 'Balance Sheet',
-        id: 'tab1i',
+        id: 'tab1j',
         closable: true,        
         layout: 'border',
         items: [ {xtype: 'panel',

@@ -256,7 +256,7 @@ if (!defined('BASEPATH'))
                     //                    Ext.Msg.alert('Failed', action.result.msg);
                 }
             });
-        } // eo function submit        
+        }// eo function submit        
         ,
         showError: function(msg, title){
             title = title || 'Error';
@@ -300,7 +300,7 @@ if (!defined('BASEPATH'))
         xtype: 'TabMasterPostingBiaya',
         alias: 'widget.MasterPostingBiaya',
         title: 'Master Posting Biaya',
-        id: 'tab1b1',
+        id: 'tab1c1',
         closable: true,        
         layout: 'border',
         items: [{

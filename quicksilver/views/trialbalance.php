@@ -22,7 +22,7 @@ if (!defined('BASEPATH'))
         xtype: 'TabTrialBalance',
         alias: 'widget.TabTrialBalance',
         title: 'Trial Balance',
-        id: 'tab1g',
+        id: 'tab1h',
         closable: true,        
         layout: 'border',
         items: [ 

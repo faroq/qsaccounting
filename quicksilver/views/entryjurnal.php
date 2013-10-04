@@ -152,7 +152,7 @@ if (!defined('BASEPATH'))
         xtype: 'TabEntryJournal',
         alias: 'widget.TabEntryJournal',
         title: 'Entry Journal',
-        id: 'tab1c',
+        id: 'tab1d',
         closable: true,        
         layout: 'border',
         items: [ {xtype: 'panel',

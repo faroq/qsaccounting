@@ -329,7 +329,7 @@ if (!defined('BASEPATH'))
         xtype: 'TabMasterAccount',
         alias: 'widget.TabMasterAccount',
         title: 'Master Account',
-        id: 'tab1a',
+        id: 'tab1b',
         closable: true,        
         layout: 'border',
         items: [{

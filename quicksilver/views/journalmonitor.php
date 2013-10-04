@@ -15,7 +15,7 @@ if (!defined('BASEPATH'))
         xtype: 'TabJournalMonitor',
         alias: 'widget.JournalMonitor',
         title: 'Journal Monitor',
-        id: 'tab1e',
+        id: 'tab1f',
         closable: true,  
         layout: 'border',
         items: 

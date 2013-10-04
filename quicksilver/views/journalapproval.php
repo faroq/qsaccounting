@@ -39,7 +39,7 @@ if (!defined('BASEPATH'))
         xtype: 'TabJournalApproval',
         alias: 'widget.TabJournalApproval',
         title: 'Journal Approval',
-        id: 'tab1d',
+        id: 'tab1e',
         closable: true,        
         layout: 'border',
         items: [ 

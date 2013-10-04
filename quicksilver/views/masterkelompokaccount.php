@@ -227,7 +227,7 @@ if (!defined('BASEPATH'))
         layout          : 'fit',
         autoShow        : true,
         modal           : true,
-        alias           : 'widget.MaccEdit',
+        alias           : 'widget.mst_account_kel_wind',
         id              : 'mst_account_kel_wind',
         initComponent   : function(){
             this.items = [
@@ -244,7 +244,7 @@ if (!defined('BASEPATH'))
         xtype: 'TabMasterKelompokAccount',
         alias: 'widget.MasterKelompokAccount',
         title: 'Master Kelompok Account',
-        id: 'tab1j',
+        id: 'tab1a',
         closable: true,        
         layout: 'border',
         items: [{

@@ -328,7 +328,7 @@ if (!defined('BASEPATH'))
         xtype: 'TabMasterPostingAccount',
         alias: 'widget.MasterPostingAccount',
         title: 'Master Posting Account',
-        id: 'tab1b2',
+        id: 'tab1c2',
         closable: true,        
         layout: 'border',
         items: [{
