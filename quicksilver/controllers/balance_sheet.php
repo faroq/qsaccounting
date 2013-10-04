@@ -250,7 +250,54 @@ class balance_sheet extends MY_Controller {
         $total = count($result);
         echo '{success:true,record:' . $total . ',data:' . json_encode($result) . '}';
     }
+    public function getthbl($thbl)
+    {
+        $th = substr($thbl,0,4);
+        $bl = substr($thbl,4,2);
+        if ($bl == '01') $bl = 'Januari';
+        else if ($bl == '02') $bl = 'Februari';
+        else if ($bl == '03') $bl = 'Maret';
+        else if ($bl == '04') $bl = 'April';
+        else if ($bl == '05') $bl = 'Mei';
+        else if ($bl == '06') $bl = 'Juni';
+        else if ($bl == '07') $bl = 'Juli';
+        else if ($bl == '08') $bl = 'Agustus';
+        else if ($bl == '09') $bl = 'September';
+        else if ($bl == '10') $bl = 'Oktober';
+        else if ($bl == '11') $bl = 'Nopember';
+        else if ($bl == '12') $bl = 'Desember';
+        return $bl.' '.$th;
+    }
+    public function bs_pdf()
+    {
+        $thbl = $_GET['thbl'];
+        $head_d = $this->bm->get_account_kelompok(array(1));
+        $head_k = $this->bm->get_account_kelompok(array(2, 3));
+        $child_d = $this->bm->get_balancesheet_child($thbl, 'D');
+        $child_k = $this->bm->get_balancesheet_child($thbl, 'K');
 
+        $child_arr_d = $this->get_max_d($head_d, $child_d);
+        $child_arr_k = $this->get_max_k($head_k, $child_k);
+
+        $loop_count = count($child_arr_d);
+        if (count($child_arr_k) > count($child_arr_d)) {
+            $first_loop = count($child_k);
+        }
+        $result = array();
+        $result = $this->get_max_bls($loop_count, $child_arr_d, $child_arr_k);
+        
+        //echo json_encode($result);
+        $pdf=new balancesheet_pdf();
+        $pdf->AliasNbPages();
+
+        //$pdf->SetAuthor('Arief Himawan');
+        $pdf->SetTitle('Balance Sheet');
+
+        $pdf->SetFont('Arial','',14);
+        $pdf->AddPage('L');
+        $pdf->create_pdf($this->getthbl($thbl), json_encode($result));
+        $pdf->Output();
+    }
 }
 
 ?>

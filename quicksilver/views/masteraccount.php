@@ -506,11 +506,13 @@ if (!defined('BASEPATH'))
                         ,tbar:{
                             xtype: 'toolbar',
                             padding:'2 0 2 5',
-                            items: [{
+                            items: [
+                                {
                                     xtype: 'button',
                                     text: 'Add',
                                     iconCls: 'icons-add',
-                                    onClick: function(){
+                                    onClick: function()
+                                    {
                                         var winmacc=Ext.create('WindowMacc');
                                         winmacc.setTitle('Add Form');
                                         Ext.getCmp('btn_macc_simpan').setText('Simpan');
@@ -519,14 +521,29 @@ if (!defined('BASEPATH'))
                                         winmacc.show();
                                     }
                                     //                                    ,action: 'add'
-                                },'-',{
+                                },
+                                {
+                                    xtype: 'button',
+                                    text: 'Repot',
+                                    iconCls: 'icons-add',
+                                    onClick: function()
+                                    {
+                                        //Ext.Ajax.request({url: '<?php echo base_url(); ?>' +'masteraccount/create_pdf'});
+                                        //Ext.Ajax.request({url: 'http://localhost/fpdf16/tutorial/tuto1.php'});
+                                        window.open('<?php echo base_url(); ?>' +'masteraccount/create_pdf');
+                                    }
+                                    //                                    ,action: 'add'
+                                },
+                                '-',
+                                {
                                     width: 300,
                                     //                                fieldLabel: 'Search',
                                     //                                labelWidth: 50,
                                     xtype: 'searchfield',
                                     store: MasterAccountStore,
                                     emptyText: 'Quick Search...'
-                                }]
+                                }
+                            ]
                         }
                         ,bbar:{                        
                             xtype: 'pagingtoolbar',

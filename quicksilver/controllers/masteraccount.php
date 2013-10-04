@@ -80,7 +80,40 @@ class masteraccount extends MY_Controller {
         echo $result;
         
     }
-    
+
+    function create_pdf()
+    {        
+        /*$pdf=new FPDF();
+        $pdf->AddPage();
+        $pdf->SetFont('Arial','B',16);
+        $pdf->Cell(40,10,'Hello World!');
+        $pdf->Output();*/
+
+        //Instanciation of inherited class
+        $pdf=new PDF();
+        $pdf->AliasNbPages();
+        $pdf->AddPage();
+        $pdf->SetFont('Times','',12);
+        for($i=1;$i<=40;$i++)
+                $pdf->Cell(0,10,'Printing line number '.$i,0,1);
+        $pdf->Output();
+
+
+        /*$pdf=new PDF();
+        //Column titles
+        $header=array('Country','Capital','Area (sq km)','Pop. (thousands)');
+        //Data loading
+        $data=$pdf->LoadData('countries.txt');
+        $pdf->SetFont('Arial','',14);
+        $pdf->AddPage();
+        $pdf->BasicTable($header,$data);
+        $pdf->AddPage();
+        $pdf->ImprovedTable($header,$data);
+        $pdf->AddPage();
+        $pdf->FancyTable($header,$data);
+        $pdf->Output();*/
+
+    }
 }
 
 ?>

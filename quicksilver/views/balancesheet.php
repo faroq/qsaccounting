@@ -292,6 +292,18 @@ if (!defined('BASEPATH'))
                                     bls_store.load({params:{thbl:vthbl}});
                 
                                 }
+                            },
+                            {xtype: 'button',
+                                text: 'Save',
+                                iconCls: 'icon-simpan',
+                                handler:function(){
+                                    if (!Ext.getCmp('bls_thbl').getValue()){
+                                        set_message(2,'Tahun Bulan Belum Diisi!!!');
+                                        return;
+                                    }
+                                    var vthbl=Ext.Date.format(Ext.getCmp('bls_thbl').getValue(),'Ym');
+                                    window.open('<?php echo base_url(); ?>' +'balance_sheet/bs_pdf?thbl='+vthbl);
+                                }
                             }]
                         }
                 ]

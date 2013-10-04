@@ -217,11 +217,14 @@ if (!defined('BASEPATH'))
                             }
                             
                         ],
-                        tbar:[{xtype: 'button',
+                        tbar:[
+                            {xtype: 'button',
                                 text: 'Load Data',
                                 iconCls: 'icon-preview',
-                                handler:function(){
-                                    if (!Ext.getCmp('tb_thbl').getValue()){
+                                handler:function()
+                                {
+                                    if (!Ext.getCmp('tb_thbl').getValue())
+                                    {
                                         set_message(2,'Tahun Bulan Belum Diisi!!!');
                                         return;
                                     }
@@ -229,7 +232,26 @@ if (!defined('BASEPATH'))
                                     tb_store.load({params:{thbl:vthbl}});
                 
                                 }
-                            }]
+                            },
+                            {
+                                xtype: 'button',
+                                text: 'Save',
+                                iconCls: 'icon-simpan',
+                                onClick: function()
+                                {
+                                    if (!Ext.getCmp('tb_thbl').getValue())
+                                    {
+                                        set_message(2,'Tahun Bulan Belum Diisi!!!');
+                                        return;
+                                    }
+                                    var vthbl=Ext.Date.format(Ext.getCmp('tb_thbl').getValue(),'Ym');
+                                    
+                                    window.open('<?php echo base_url(); ?>' +'base_report/trialbalance_pdf?thbl='+vthbl);
+                                }
+                                //                                    ,action: 'add'
+                            }
+
+                            ]
                         ,features:[{
                                 ftype: 'grouping',
                                 //                                groupHeaderTpl: '{columnName}: {name} ({rows.length} Item{[values.rows.length > 1 ? "s" : ""]})',

@@ -134,7 +134,8 @@ if (!defined('BASEPATH'))
                                 }
                             }
                         ],                        
-                        tbar:[{xtype: 'button',
+                        tbar:[
+                            {xtype: 'button',
                                 text: 'Load Data',
                                 iconCls: 'icon-preview',
                                 handler:function(){
@@ -146,7 +147,22 @@ if (!defined('BASEPATH'))
                                     incs_store.load({params:{thbl:vthbl}});
                 
                                 }
-                            }]
+                            },
+                            {xtype: 'button',
+                                text: 'Save',
+                                iconCls: 'icon-simpan',
+                                handler:function(){
+                                    if (!Ext.getCmp('incs_thbl').getValue()){
+                                        set_message(2,'Tahun Bulan Belum Diisi!!!');
+                                        return;
+                                    }
+                                    var vthbl=Ext.Date.format(Ext.getCmp('incs_thbl').getValue(),'Ym');
+                                    //incs_store.load({params:{thbl:vthbl}});
+                                    window.open('<?php echo base_url(); ?>' +'income_statement/instat_pdf?thbl='+vthbl);
+
+                                }
+                            }
+                            ]
                         ,features:[{
                                 ftype: 'grouping',
                                 //                                groupHeaderTpl: '{columnName}: {name} ({rows.length} Item{[values.rows.length > 1 ? "s" : ""]})',

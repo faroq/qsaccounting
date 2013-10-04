@@ -38,4 +38,13 @@ define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 
 
 /* End of file constants.php */
-/* Location: ./application/config/constants.php */
+/* Location: ./application/config/constants.php
+ */
+
+
+require_once('assets/fpdf/fpdf.php');
+require_once('assets/fpdf/trialbalance_pdf.php');
+require_once('assets/fpdf/gl_pdf.php');
+require_once('assets/fpdf/instat_pdf.php');
+require_once('assets/fpdf/instat_pdf.php');
+require_once('assets/fpdf/balancesheet_pdf.php');

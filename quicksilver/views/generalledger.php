@@ -302,7 +302,64 @@ if (!defined('BASEPATH'))
                                     
                                 }
                                 
-                            }]
+                            },
+                            {xtype: 'button',
+                                text: 'Save',
+                                iconCls: 'icon-simpan',
+                                handler:function(){
+                                    if (!Ext.getCmp('gl_filter_bulantahun').collapsed){
+                                        if (!Ext.getCmp('gl_thbl').getValue()){
+                                            set_message(1,'Tahun Bulan belum diisi!!');
+                                            return;
+                                        }
+                                    }
+                                    if (!Ext.getCmp('gl_filter_tgl').collapsed){
+                                        if (!Ext.getCmp('gl_tgl_awal').getValue()){
+                                            set_message(1,'Tanggal Awal belum diisi!!');
+                                            return;
+                                        }
+                                        if (!Ext.getCmp('gl_tgl_akhir').getValue()){
+                                            set_message(1,'Tanggal Akhir belum diisi!!');
+                                            return;
+                                        }
+                                    }
+                                    if (!Ext.getCmp('gl_filter_rekening').collapsed){
+                                        if(!Ext.getCmp('gl_rekening').getValue()){
+                                            set_message(1,'Rekening belum diisi!!');
+                                            return;
+                                        }
+                                    }
+                                    var parquery=new Array();
+                                    parquery.push({name:'opt',value:null});
+                                    parquery.push({name:'optrek',value:'off'});
+                                    parquery.push({name:'thbl',value:null});
+                                    parquery.push({name:'tglawal',value:null});
+                                    parquery.push({name:'tglakhir',value:null});
+                                    parquery.push({name:'rekening',value:null});
+
+                                    //                                    'tgl','off','201309','2013-09-26','2013-09-27','1110.10'
+                                    if (!Ext.getCmp('gl_filter_bulantahun').collapsed){
+                                        parquery[0]['value']='bln';
+                                        parquery[2]['value']=Ext.Date.format(Ext.getCmp('gl_thbl').getValue(),'Ym');
+                                    }
+                                    if (!Ext.getCmp('gl_filter_tgl').collapsed){
+                                        parquery[0]['value']='tgl';
+                                        parquery[3]['value']=Ext.Date.format(Ext.getCmp('gl_tgl_awal').getValue(), 'Y-m-d');
+                                        parquery[4]['value']=Ext.Date.format(Ext.getCmp('gl_tgl_akhir').getValue(), 'Y-m-d');
+                                    }
+                                    if (!Ext.getCmp('gl_filter_rekening').collapsed){
+                                        parquery[1]['value']='on';
+                                        parquery[5]['value']=Ext.getCmp('gl_rekening').getValue();
+                                        Ext.getCmp('grid1f').reconfigure(gl_store2,getColums_gl(2));
+                                        //gl_store2.load({params:{query:Ext.JSON.encode(parquery)}});
+                                    }else{
+                                        Ext.getCmp('grid1f').reconfigure(gl_store1,getColums_gl(1));
+                                        //gl_store1.load({params:{query:Ext.JSON.encode(parquery)}});
+                                    }
+                                    window.open('<?php echo base_url(); ?>' +'base_report/gl_pdf?query='+Ext.JSON.encode(parquery));
+                                }
+                            }
+                            ]
                         ,features:[{
                                 ftype: 'grouping',
                                 //                                groupHeaderTpl: '{columnName}: {name} ({rows.length} Item{[values.rows.length > 1 ? "s" : ""]})',

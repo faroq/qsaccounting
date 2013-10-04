@@ -15,7 +15,10 @@ class jurnal_monitor extends MY_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('base_model', 'jm_model');
-        $this->load->library('../controllers/global_reference');
+        //$this->load->model('base_model', 'entry_jurnal_model');
+        //$this->load->library('../controllers/global_reference');
+        //$this->load->model('global_reference_model', 'global_reference_model');
+
 
     } 
     function get_row_monitor(){
@@ -64,6 +67,8 @@ class jurnal_monitor extends MY_Controller {
     
 //   function get_row
     //put your code here
+    
+
 }
 
 ?>

@@ -146,6 +146,65 @@ class income_statement extends MY_Controller {
 //        period_add(vthbl,-1)
     }
 
+    public function getthbl($thbl)
+    {
+        $th = substr($thbl,0,4);
+        $bl = substr($thbl,4,2);
+        if ($bl == '01') $bl = 'Januari';
+        else if ($bl == '02') $bl = 'Februari';
+        else if ($bl == '03') $bl = 'Maret';
+        else if ($bl == '04') $bl = 'April';
+        else if ($bl == '05') $bl = 'Mei';
+        else if ($bl == '06') $bl = 'Juni';
+        else if ($bl == '07') $bl = 'Juli';
+        else if ($bl == '08') $bl = 'Agustus';
+        else if ($bl == '09') $bl = 'September';
+        else if ($bl == '10') $bl = 'Oktober';
+        else if ($bl == '11') $bl = 'Nopember';
+        else if ($bl == '12') $bl = 'Desember';
+        return $bl.' '.$th;
+    }
+    
+    public function instat_pdf()
+    {
+        $thbl = isset($_GET['thbl']) ? json_decode($_GET['thbl']) : null;
+        $head = $this->bm->get_account_kelompok(array(4, 5));
+        $child = $this->bm->get_incomestatement_child($thbl);
+        $thbl_t = $this->get_periodeadd_thbl($thbl, -1);
+
+        $result = array();
+        $result = $this->get_max_incs($head, $child, $thbl, $thbl_t);
+        //$total = count($result);
+        //echo '{success:true,record:' . $total . ',data:' . json_encode($result) . '}';
+        //
+        //echo $thbl.' '.$head.' '.$child.' '.$result;
+        //$total = count($result);
+        //echo '{success:true,record:' . $total . ',data:' . json_encode($result) . '}';
+
+
+        $pdf=new instat_pdf();
+        $pdf->AliasNbPages();
+
+        //$pdf->SetAuthor('Arief Himawan');
+        $pdf->SetTitle('Income Statemen');
+
+        //Column titles
+
+        //echo date("d-m-Y H:i:s");
+
+        //Data loading
+        //$data=$pdf->LoadData('countries.txt');
+        $pdf->SetFont('Arial','',14);
+        $pdf->AddPage('P');
+        //$pdf->BasicTable($header,$result);
+        //$pdf->AddPage();
+        //$pdf->ImprovedTable($header,$result);
+        //$pdf->AddPage();
+        //echo json_encode($result);
+        $pdf->create_pdf($this->getthbl($thbl), json_encode($result));
+        //$pdf->Output('myPdf.pdf','F');
+        $pdf->Output();
+    }
 }
 
 ?>
