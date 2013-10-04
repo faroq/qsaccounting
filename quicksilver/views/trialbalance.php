@@ -235,8 +235,8 @@ if (!defined('BASEPATH'))
                             },
                             {
                                 xtype: 'button',
-                                text: 'Save',
-                                iconCls: 'icon-simpan',
+                                text: 'Preview PDF',
+                                iconCls: 'icon-preview_report',
                                 onClick: function()
                                 {
                                     if (!Ext.getCmp('tb_thbl').getValue())

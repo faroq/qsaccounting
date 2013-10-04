@@ -304,8 +304,8 @@ if (!defined('BASEPATH'))
                                 
                             },
                             {xtype: 'button',
-                                text: 'Save',
-                                iconCls: 'icon-simpan',
+                                text: 'Preview PDF',
+                                iconCls: 'icon-preview_report',
                                 handler:function(){
                                     if (!Ext.getCmp('gl_filter_bulantahun').collapsed){
                                         if (!Ext.getCmp('gl_thbl').getValue()){

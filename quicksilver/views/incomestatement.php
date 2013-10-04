@@ -149,8 +149,8 @@ if (!defined('BASEPATH'))
                                 }
                             },
                             {xtype: 'button',
-                                text: 'Save',
-                                iconCls: 'icon-simpan',
+                                text: 'Preview PDF',
+                                iconCls: 'icon-preview_report',
                                 handler:function(){
                                     if (!Ext.getCmp('incs_thbl').getValue()){
                                         set_message(2,'Tahun Bulan Belum Diisi!!!');
