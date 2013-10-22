@@ -131,7 +131,7 @@ if (!defined('BASEPATH'))
                 layout: 'fit',
                 items:[
                     {
-                        xtype:'grid',
+                        xtype:'gridexporter',
                         id:'jmon_grid',
                         stateful:true,
                         stateId:'stateGrid',
@@ -228,52 +228,88 @@ if (!defined('BASEPATH'))
                         ],
                         tbar:{
                             xtype:'toolbar',
-                            items:{
-                                xtype: 'button',
-                                text: 'Load Data',
-                                iconCls: 'icon-preview',                            
-                                handler:function(){
-                                    //validasi                                
-                                    if (!Ext.getCmp('jmon_tgl').collapsed){
-                                        if (!Ext.getCmp('jmon_tgl_awal').getValue()){
-                                            set_message(2,'Tanggal Awal Belum Dipilih');
-                                            return;
+                            items:[{
+                                    xtype: 'button',
+                                    text: 'Load Data',
+                                    iconCls: 'icon-preview',                            
+                                    handler:function(){
+                                        //validasi                                
+                                        if (!Ext.getCmp('jmon_tgl').collapsed){
+                                            if (!Ext.getCmp('jmon_tgl_awal').getValue()){
+                                                set_message(2,'Tanggal Awal Belum Dipilih');
+                                                return;
+                                            }
+                                            if (!Ext.getCmp('jmon_tgl_akhir').getValue()){
+                                                set_message(2,'Tanggal Akhir Belum Dipilih');
+                                                return;
+                                            }
+                                            if (Ext.getCmp('jmon_tgl_awal').getValue()>Ext.getCmp('jmon_tgl_akhir').getValue()){
+                                                set_message(2,'Tanggal Akhir kurang dari Tanggal Awal');
+                                                return;
+                                            }
                                         }
-                                        if (!Ext.getCmp('jmon_tgl_akhir').getValue()){
-                                            set_message(2,'Tanggal Akhir Belum Dipilih');
-                                            return;
-                                        }
-                                        if (Ext.getCmp('jmon_tgl_awal').getValue()>Ext.getCmp('jmon_tgl_akhir').getValue()){
-                                            set_message(2,'Tanggal Akhir kurang dari Tanggal Awal');
-                                            return;
-                                        }
-                                    }
-                                    //set parameter query
-                                    var parquery=new Array();
-                                    if (!Ext.getCmp('jmon_tgl').collapsed){
-                                        parquery.push({name:'tgl_awal',value:Ext.Date.format(Ext.getCmp('jmon_tgl_awal').getValue(), 'Y-m-d')});
-                                        parquery.push({name:'tgl_akhir',value:Ext.Date.format(Ext.getCmp('jmon_tgl_akhir').getValue(), 'Y-m-d')});
+                                        //set parameter query
+                                        var parquery=new Array();
+                                        if (!Ext.getCmp('jmon_tgl').collapsed){
+                                            parquery.push({name:'tgl_awal',value:Ext.Date.format(Ext.getCmp('jmon_tgl_awal').getValue(), 'Y-m-d')});
+                                            parquery.push({name:'tgl_akhir',value:Ext.Date.format(Ext.getCmp('jmon_tgl_akhir').getValue(), 'Y-m-d')});
                                        
-                                    }
-                                    if (!Ext.getCmp('jmon_filter').collapsed){                                    
+                                        }
+                                        if (!Ext.getCmp('jmon_filter').collapsed){                                    
                                     
-                                        if (Ext.getCmp('jmon_filter_by').getValue().rbfilter==1){                                        
-                                            parquery.push({name:'referensi',value:Ext.getCmp('jmon_filter_value').getValue()});
-                                        }else if (Ext.getCmp('jmon_filter_by').getValue().rbfilter==2){
-                                            parquery.push({name:'keterangan',value:Ext.getCmp('jmon_filter_value').getValue()});                                                                                
-                                        }else if (Ext.getCmp('jmon_filter_by').getValue().rbfilter==3){
-                                            parquery.push({name:'rekening',value:Ext.getCmp('jmon_filter_value').getValue()});                                        
+                                            if (Ext.getCmp('jmon_filter_by').getValue().rbfilter==1){                                        
+                                                parquery.push({name:'referensi',value:Ext.getCmp('jmon_filter_value').getValue()});
+                                            }else if (Ext.getCmp('jmon_filter_by').getValue().rbfilter==2){
+                                                parquery.push({name:'keterangan',value:Ext.getCmp('jmon_filter_value').getValue()});                                                                                
+                                            }else if (Ext.getCmp('jmon_filter_by').getValue().rbfilter==3){
+                                                parquery.push({name:'rekening',value:Ext.getCmp('jmon_filter_value').getValue()});                                        
+                                            }
+                                        }
+                                
+                                        //                                 console.log(parquery.length);
+                                        if (parquery.length>0){
+                                            journalMonitor_store.removeAll();
+                                            journalMonitor_store.reload({params:{query:Ext.JSON.encode(parquery)}});
+                                        }
+                                        //                                
+                                    }
+                                },{
+                                
+                                    xtype: 'button',
+                                    text: 'Export Data To Excel',
+                                    iconCls: 'icon-export',   
+                                    handler:function(){
+                                        var gridstr=Ext.getCmp('jmon_grid').getStore();
+                                        var vtitle='Jurnal Monitor';
+                                        if(gridstr.getTotalCount()>0 ){
+                                            if (!Ext.getCmp('jmon_tgl').collapsed){                                                
+                                                vtitle='Filter By Date ' + Ext.Date.format(Ext.getCmp('jmon_tgl_awal').getValue(), 'Y-m-d') +' s/d ' + Ext.Date.format(Ext.getCmp('jmon_tgl_akhir').getValue(), 'Y-m-d');
+                                       
+                                            }
+                                            if (!Ext.getCmp('jmon_filter').collapsed){                                    
+                                    
+                                                if (Ext.getCmp('jmon_filter_by').getValue().rbfilter==1){                                        
+                                                    vtitle=+ vtitle + ' Filter By Referensi ' + Ext.getCmp('jmon_filter_value').getValue();
+                                                    
+                                                }else if (Ext.getCmp('jmon_filter_by').getValue().rbfilter==2){
+                                                    vtitle=+ vtitle + ' Filter By Keterangan ' + Ext.getCmp('jmon_filter_value').getValue();
+                                                    
+                                                }else if (Ext.getCmp('jmon_filter_by').getValue().rbfilter==3){
+                                                    vtitle=+ vtitle + ' Filter By Rekening ' + Ext.getCmp('jmon_filter_value').getValue();
+                                                   
+                                                }
+                                            }
+                                            var mdata = Ext.getCmp('jmon_grid').exportGrid(Ext.getCmp('jmon_grid'),'excel',
+                                            {title:vtitle});
+                                            //                                           console.log(mdata);
+                                            document.location= mdata;
+                                        }else{
+                                            set_message(2, "No Data Found to Export");
+                                            return;
                                         }
                                     }
-                                
-                                    //                                 console.log(parquery.length);
-                                    if (parquery.length>0){
-                                        journalMonitor_store.removeAll();
-                                        journalMonitor_store.reload({params:{query:Ext.JSON.encode(parquery)}});
-                                    }
-                                    //                                
                                 }
-                            }
+                            ]
                             
                         },
                         bbar:{
@@ -282,14 +318,14 @@ if (!defined('BASEPATH'))
                             pageSize: ENDPAGE,
                             displayInfo: true
                         }
-//                        viewConfig:{
-//                            getRowClass: function(record, rowIndex, rp, ds){
-//                                if(record.get('jurnal_by')=='fnn'){
-//                                    console.log(record.get('jurnal_by'));
-//                                    return "x-grid-warna";
-//                                }
-//                            }
-//                        }
+                        //                        viewConfig:{
+                        //                            getRowClass: function(record, rowIndex, rp, ds){
+                        //                                if(record.get('jurnal_by')=='fnn'){
+                        //                                    console.log(record.get('jurnal_by'));
+                        //                                    return "x-grid-warna";
+                        //                                }
+                        //                            }
+                        //                        }
                     }
                 ]
             }        
@@ -301,7 +337,7 @@ if (!defined('BASEPATH'))
             show:function()
             {
                 var parquery=new Array();
-               parquery.push({name:'tgl_awal',value:Ext.Date.format(new Date(), 'Y-m-d')});
+                parquery.push({name:'tgl_awal',value:Ext.Date.format(new Date(), 'Y-m-d')});
                 parquery.push({name:'tgl_akhir',value:Ext.Date.format(new Date(), 'Y-m-d')});
                 var storegrid=Ext.getCmp('jmon_grid').store;
                 storegrid.load({params:{query:Ext.JSON.encode(parquery)}});

@@ -522,18 +522,18 @@ if (!defined('BASEPATH'))
                                     }
                                     //                                    ,action: 'add'
                                 },
-                                {
-                                    xtype: 'button',
-                                    text: 'Repot',
-                                    iconCls: 'icons-add',
-                                    onClick: function()
-                                    {
-                                        //Ext.Ajax.request({url: '<?php echo base_url(); ?>' +'masteraccount/create_pdf'});
-                                        //Ext.Ajax.request({url: 'http://localhost/fpdf16/tutorial/tuto1.php'});
-                                        window.open('<?php echo base_url(); ?>' +'masteraccount/create_pdf');
-                                    }
-                                    //                                    ,action: 'add'
-                                },
+//                                {
+//                                    xtype: 'button',
+//                                    text: 'Repot',
+//                                    iconCls: 'icons-add',
+//                                    onClick: function()
+//                                    {
+//                                        //Ext.Ajax.request({url: '<?php echo base_url(); ?>' +'masteraccount/create_pdf'});
+//                                        //Ext.Ajax.request({url: 'http://localhost/fpdf16/tutorial/tuto1.php'});
+//                                        window.open('<?php echo base_url(); ?>' +'masteraccount/create_pdf');
+//                                    }
+//                                    //                                    ,action: 'add'
+//                                },
                                 '-',
                                 {
                                     width: 300,

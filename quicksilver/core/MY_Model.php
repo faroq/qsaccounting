@@ -185,8 +185,8 @@ class MY_MODEL extends CI_Model {
                 $results = json_encode($json);
             } else {
                 $json = array(
-                    "success" => false,
-                    "msg" => 'Execute Aborted'
+                    "success" => true,
+                    "msg" => 'Execute Successfull'
                 );
                 $results = json_encode($json);
             }

@@ -9,7 +9,7 @@ if (!defined('BASEPATH'))
         autoLoad	: false,
         autoSync	: false,
         storeId		: 'mst_account_kel_store',
-        fields          : ['jenis','nama_jenis','dk','default','kelompok','nama_kelompok','kode_asosiasi','nilai','flag'],
+        fields          : ['jenis','nama_jenis','dk','default','kelompok','nama_kelompok','kode_asosiasi','nilai',{name: 'flag', type:'bool'}],
         proxy		: {
             type: 'ajax',
             api: {                    
@@ -279,6 +279,9 @@ if (!defined('BASEPATH'))
                                             var rec = grid.getStore().getAt(rowIndex);
                                             var winmacc=Ext.create('mst_account_kel_wind');
                                             winmacc.setTitle('Edit Form');
+                                            Ext.getCmp('mst_account_kel_dk_cb').getStore().reload();
+                                            Ext.getCmp('mst_account_kel_jenis_cb').getStore().reload();
+                                            
                                             Ext.getCmp('mst_account_kel_simpan_btn').setText('Edit');
                                             Ext.getCmp('mst_account_kel_simpan_btn').setIconCls('icon-edit-record');
                                             Ext.getCmp('mst_account_kel_kelompok_txt').setReadOnly(true);
@@ -289,10 +292,11 @@ if (!defined('BASEPATH'))
                                             Ext.getCmp('mst_account_kel_nama_kelompok_txt').setValue(rec.get('nama_kelompok'));
                                             Ext.getCmp('mst_account_kel_kode_asosiasi_txt').setValue(rec.get('kode_asosiasi'));
                                             Ext.getCmp('mst_account_kel_nilai_txt').setValue(rec.get('nilai'));
-                                            if (rec.get('flag') == '*')
-                                                Ext.getCmp('mst_account_kel_flag_txt').setValue(true);
-                                            else
-                                                Ext.getCmp('mst_account_kel_flag_txt').setValue(false);
+                                            Ext.getCmp('mst_account_kel_flag_txt').setValue(rec.get('flag'));
+//                                            if (rec.get('flag') == '*')
+//                                                Ext.getCmp('mst_account_kel_flag_txt').setValue(true);
+//                                            else
+//                                                Ext.getCmp('mst_account_kel_flag_txt').setValue(false);
                                             winmacc.show();
                                             //                                            Ext.Msg.alert('Edit', 'Edit ' + rec.get('rekening'));
                                         }
@@ -434,7 +438,8 @@ if (!defined('BASEPATH'))
                                     xtype: 'searchfield',
                                     store: mst_account_kel_store,
                                     emptyText: 'Quick Search...'
-                                }]
+                                }
+                            ]
                         }
                         ,bbar:{                        
                             xtype: 'pagingtoolbar',

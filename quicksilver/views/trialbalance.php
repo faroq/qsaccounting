@@ -67,7 +67,7 @@ if (!defined('BASEPATH'))
                 layout: 'fit',
                 items:[
                     {
-                        xtype:'grid',
+                        xtype:'gridexporter',
                         id:'grid1g',
                         store: tb_store,
                         stripeRows: true,

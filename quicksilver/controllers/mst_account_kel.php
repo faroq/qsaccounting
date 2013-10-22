@@ -37,8 +37,12 @@ class mst_account_kel extends MY_Controller {
         $kode_asosiasi = isset($_POST['kode_asosiasi']) ? $this->db->escape_str($this->input->post('kode_asosiasi', TRUE)) : '';
         $nilai = isset($_POST['nilai']) ? $this->db->escape_str($this->input->post('nilai', TRUE)) : '';
         $flag = isset($_POST['flag']) ? $this->db->escape_str($this->input->post('flag', TRUE)) : '';
-        
-        $param=array($opt,$jenis,$dk,$kelompok,$nama_kelompok,$kode_asosiasi,$nilai);
+        if($flag=='on'){
+            $flag=1;
+        }else{
+            $flag=0;
+        }
+        $param=array($opt,$jenis,$dk,$kelompok,$nama_kelompok,$kode_asosiasi,$nilai,$flag);
         $spname='sp_mst_account_kel';
         $result = $this->makel->SP_execData($spname, $param, true);
         echo $result;

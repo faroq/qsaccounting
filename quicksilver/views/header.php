@@ -9,6 +9,7 @@
             <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/style/mainstyle.css'); ?>">            
 
                 <script type="text/javascript" src="<?php echo base_url('assets/extjs/ext-all.js'); ?>"></script>
+
                 <script type="text/javascript" src="<?php echo base_url('assets/extjs/ux/TabCloseMenu.js'); ?>"></script>
                 <script type="text/javascript" src="<?php echo base_url('assets/extjs/ux/SlidingPager.js'); ?>"></script>
                 <script type="text/javascript" src="<?php echo base_url('assets/extjs/ux/form/SearchField.js'); ?>"></script>
@@ -16,12 +17,38 @@
                 <script type="text/javascript" src="<?php echo base_url('assets/extjs/ux/form/TwinCombo.js'); ?>"></script>
                 <script type="text/javascript" src="<?php echo base_url('assets/extjs/ux/grid/FiltersFeature.js'); ?>"></script>
                 <script type="text/javascript" src="<?php echo base_url('assets/extjs/ux/MonthPicker.js'); ?>"></script>
+                <script type="text/javascript" src="<?php echo base_url('assets/extjs/ux/grid/ExcelEncoder.js'); ?>"></script>
+                <script type="text/javascript" src="<?php echo base_url('assets/extjs/ux/grid/GridExporter.js'); ?>"></script>
+               
 
-                
-                
+
+
+
 
 
                 <script type="text/javascript">
+                    
+                    //                    Ext.Loader.setConfig({     
+                    //                        enabled: true
+                    //                    });
+                    //                    Ext.Loader.setPath('Ext.ux', "<?php echo base_url('assets/extjs/ux'); ?>");
+                    //                    Ext.Loader.setPath('Ext.tab', "<?php echo base_url('assets/extjs/src/tab'); ?>");
+                    //                    Ext.Loader.setPath('Ext.container', "<?php echo base_url('assets/extjs/src/container'); ?>");
+                    //                    Ext.require([        
+                    //                        'Ext.tab.*',
+                    //                        'Ext.form.*',
+                    //                        'Ext.ux.TabCloseMenu',
+                    //                        'Ext.ux.SlidingPager',
+                    //                        'Ext.ux.form.SearchField',
+                    //                        'Ext.ux.form.NumericField',
+                    //                        'Ext.ux.form.TwinCombo',
+                    //                        'Ext.ux.grid.FiltersFeature',
+                    //                        'Ext.ux.MonthPicker',
+                    //                        'Ext.ux.exporter.*',
+                    //                        
+                    //   
+                    //                    ]);
+
                     var STARTPAGE = 0;
                     var ENDPAGE = <?= $this->config->item('length_records') ?>;
                     var required_css = '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>';
@@ -310,169 +337,169 @@
                     }
                     
                     //--------------------------------------------------------------------
-    Ext.define('update_password_form', {
-        extend          : 'Ext.form.Panel',
-        alias           : 'widget.update_password_form',
-        id              : 'update_password_form',
-        requires        : [
-            'Ext.form.Field'
-        ],
-        defaultType     : 'textfield',
-        defaults        : {
-            allowBlank: false,
-            labelAlign: 'left',
-            labelWidth: 100
-        },
-        monitorValid: true,
-        url: '<?php echo base_url(); ?>' + 'user_setting/update_password',
-        buttonAlign     : 'center',
-        padding         : 5,
-        style           : 'background-color: #fff;',
-        border          : false,
-        initComponent   : function(){
-            this.items = [
+                    Ext.define('update_password_form', {
+                        extend          : 'Ext.form.Panel',
+                        alias           : 'widget.update_password_form',
+                        id              : 'update_password_form',
+                        requires        : [
+                            'Ext.form.Field'
+                        ],
+                        defaultType     : 'textfield',
+                        defaults        : {
+                            allowBlank: false,
+                            labelAlign: 'left',
+                            labelWidth: 100
+                        },
+                        monitorValid: true,
+                        url: '<?php echo base_url(); ?>' + 'user_setting/update_password',
+                        buttonAlign     : 'center',
+                        padding         : 5,
+                        style           : 'background-color: #fff;',
+                        border          : false,
+                        initComponent   : function(){
+                            this.items = [
                 
                    
-                        {
-                            name: 'user_id',
-                            fieldLabel:'User Id',
-                            id: 'update_user_id',
-                            tooltip: 'Field tidak boleh kosong',
-                            afterLabelTextTpl: required_css, 
-                            allowBlank:false,
-                            maxLength:10,
-                            width: 50,
-                            readOnly:true,
-                            anchor:'90%'
-                        },{
-                            name: 'user_password',
-                            id: 'update_user_password',
-                            fieldLabel:'Old Password',
-                            inputType:'password',
-                            tooltip: 'Field tidak boleh kosong',
-                            afterLabelTextTpl: required_css,   
-                            allowBlank:false,                            
-                            width: 200,
-                            anchor:'90%'
-//                            margins: '0 0 0 5'
+                                {
+                                    name: 'user_id',
+                                    fieldLabel:'User Id',
+                                    id: 'update_user_id',
+                                    tooltip: 'Field tidak boleh kosong',
+                                    afterLabelTextTpl: required_css, 
+                                    allowBlank:false,
+                                    maxLength:10,
+                                    width: 50,
+                                    readOnly:true,
+                                    anchor:'90%'
+                                },{
+                                    name: 'user_password',
+                                    id: 'update_user_password',
+                                    fieldLabel:'Old Password',
+                                    inputType:'password',
+                                    tooltip: 'Field tidak boleh kosong',
+                                    afterLabelTextTpl: required_css,   
+                                    allowBlank:false,                            
+                                    width: 200,
+                                    anchor:'90%'
+                                    //                            margins: '0 0 0 5'
                             
-                        },{
-                            name: 'new_password',
-                            id: 'update_new_password',
-                            fieldLabel:'New Password',
-                            inputType:'password',
-                            tooltip: 'Field tidak boleh kosong',
-                            afterLabelTextTpl: required_css,   
-                            allowBlank:false,                            
-                            width: 200,
-                            anchor:'90%'
-//                            margins: '0 0 0 5'
+                                },{
+                                    name: 'new_password',
+                                    id: 'update_new_password',
+                                    fieldLabel:'New Password',
+                                    inputType:'password',
+                                    tooltip: 'Field tidak boleh kosong',
+                                    afterLabelTextTpl: required_css,   
+                                    allowBlank:false,                            
+                                    width: 200,
+                                    anchor:'90%'
+                                    //                            margins: '0 0 0 5'
                             
-                        }
+                                }
                     
                
-            ];
-            this.buttons = [
-                {
-                    text: 'Simpan',                    
-                    itemId: 'update_simpan',
-                    id:'update_simpan_respwd_btn',
-                    iconCls: 'icon-list-accept',
-                    handler: this.submit
-                },
-                {
-                    text: 'Batal',
-                    action: 'cancel',
-                    itemId: 'update_respwd_batal',
-                    iconCls: 'icon-cancel',
-                    handler: function(){
-                        this.up('window').close();
-                    }
-                }
-            ];
-            this.callParent(arguments);
-        },
-        submit: function(){
-            var parcmd='updatepassword';            
+                            ];
+                            this.buttons = [
+                                {
+                                    text: 'Simpan',                    
+                                    itemId: 'update_simpan',
+                                    id:'update_simpan_respwd_btn',
+                                    iconCls: 'icon-list-accept',
+                                    handler: this.submit
+                                },
+                                {
+                                    text: 'Batal',
+                                    action: 'cancel',
+                                    itemId: 'update_respwd_batal',
+                                    iconCls: 'icon-cancel',
+                                    handler: function(){
+                                        this.up('window').close();
+                                    }
+                                }
+                            ];
+                            this.callParent(arguments);
+                        },
+                        submit: function(){
+                            var parcmd='updatepassword';            
             
-            if(!Ext.getCmp('update_password_form').getForm().isValid()){
-                set_message(2,'Masih Ada Field Yang Salah!!!');
-                return;
-            }            
+                            if(!Ext.getCmp('update_password_form').getForm().isValid()){
+                                set_message(2,'Masih Ada Field Yang Salah!!!');
+                                return;
+                            }            
                                     
-            Ext.getCmp('update_password_form').getForm().submit({
-                url: this.url,
-                scope: this,
-                params: {
-                    cmd: parcmd
-                },
-                waitMsg: 'Saving Data...',
-                success: function(form, action) {
-                    var vmsg=action.result.msg;
-//                    set_message(0,action.result.msg);
-                    Ext.Msg.show({
-                                title:'Message Info',
-                                msg: vmsg,
-                                buttons: Ext.Msg.OK,
-                                icon: Ext.Msg.INFO,
-                                fn:function(btn){
-                                    if (btn == 'ok'){
-                                        Ext.Ajax.request({
-                                            url: '<?= site_url("auth/logout") ?>',
-                                            method: 'POST',
-                                            success: function(xhr){
-                                                window.location = '<?= site_url("auth/login") ?>';
+                            Ext.getCmp('update_password_form').getForm().submit({
+                                url: this.url,
+                                scope: this,
+                                params: {
+                                    cmd: parcmd
+                                },
+                                waitMsg: 'Saving Data...',
+                                success: function(form, action) {
+                                    var vmsg=action.result.msg;
+                                    //                    set_message(0,action.result.msg);
+                                    Ext.Msg.show({
+                                        title:'Message Info',
+                                        msg: vmsg,
+                                        buttons: Ext.Msg.OK,
+                                        icon: Ext.Msg.INFO,
+                                        fn:function(btn){
+                                            if (btn == 'ok'){
+                                                Ext.Ajax.request({
+                                                    url: '<?= site_url("auth/logout") ?>',
+                                                    method: 'POST',
+                                                    success: function(xhr){
+                                                        window.location = '<?= site_url("auth/login") ?>';
+                                                    }
+                                                });
                                             }
-                                        });
+                                        }
+                                    });
+                    
+                                },
+                                failure: function(form, action) {
+                                    var resp=action.response.responseText;
+                                    set_message(2,action.result.msg);
+
+                                }
+                            });
+                        } // eo function submit        
+                        ,
+                        showError: function(msg, title){
+                            title = title || 'Error';
+                            Ext.Msg.show({
+                                title: title,
+                                msg: msg,
+                                modal: true,
+                                icon: Ext.Msg.ERROR,
+                                buttons: Ext.Msg.OK,
+                                fn: function(btn){
+                                    if (btn == 'ok' && msg == 'Session Expired') {
+                                        window.location = '<?= site_url("auth/login") ?>';
                                     }
                                 }
                             });
-                    
-                },
-                failure: function(form, action) {
-                    var resp=action.response.responseText;
-                    set_message(2,action.result.msg);
+                        }
+                    });
+                    Ext.define('update_password_win', {
+                        extend          : 'Ext.window.Window',
+                        title           : 'Change Password',
+                        width           : 300,
+                        height          : 170,
+                        layout          : 'fit',
+                        autoShow        : true,
+                        modal           : true,
+                        alias           : 'widget.update_password_edit',
+                        id              : 'update_password_win',
+                        //        maximizable     :true,
+                        initComponent   : function(){
+                            this.items = [
+                                Ext.widget('update_password_form')
+                            ];
+                            this.callParent(arguments);
+                        }
 
-                }
-            });
-        } // eo function submit        
-        ,
-        showError: function(msg, title){
-            title = title || 'Error';
-            Ext.Msg.show({
-                title: title,
-                msg: msg,
-                modal: true,
-                icon: Ext.Msg.ERROR,
-                buttons: Ext.Msg.OK,
-                fn: function(btn){
-                    if (btn == 'ok' && msg == 'Session Expired') {
-                        window.location = '<?= site_url("auth/login") ?>';
-                    }
-                }
-            });
-        }
-    });
-    Ext.define('update_password_win', {
-        extend          : 'Ext.window.Window',
-        title           : 'Change Password',
-        width           : 300,
-        height          : 170,
-        layout          : 'fit',
-        autoShow        : true,
-        modal           : true,
-        alias           : 'widget.update_password_edit',
-        id              : 'update_password_win',
-        //        maximizable     :true,
-        initComponent   : function(){
-            this.items = [
-                Ext.widget('update_password_form')
-            ];
-            this.callParent(arguments);
-        }
-
-    });
-    //--------------------------------------------------------------------
+                    });
+                    //--------------------------------------------------------------------
                 </script>
 
 
