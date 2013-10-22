@@ -61,7 +61,7 @@ class mst_account_kel extends MY_Controller {
         $nilai = ' ';
         $flag = ' ';
         
-        $param=array($opt,$jenis,$dk,$kelompok,$nama_kelompok,$kode_asosiasi,$nilai);
+        $param=array($opt,$jenis,$dk,$kelompok,$nama_kelompok,$kode_asosiasi,$nilai,$flag);
         $spname='sp_mst_account_kel';
         $result = $this->makel->SP_execData($spname, $param, true);
         echo $result;
