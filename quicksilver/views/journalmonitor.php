@@ -134,7 +134,7 @@ if (!defined('BASEPATH'))
                         xtype:'gridexporter',
                         id:'jmon_grid',
                         stateful:true,
-                        stateId:'stateGrid',
+                        stateId:'stateGridJMON',
                         store: journalMonitor_store,//Ext.data.StoreManager.lookup('JournalMonitor_store'),
                         stripeRows: true,
                         loadMask: true,                                                

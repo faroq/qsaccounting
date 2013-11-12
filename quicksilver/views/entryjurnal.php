@@ -231,7 +231,7 @@ if (!defined('BASEPATH'))
                         stripeRows: true,
                         //                        loadMask: true,
                         stateful:true,
-                        stateId:'stateGrid',   
+                        stateId:'stateGridEJ',   
                         selModel:Ext.create('Ext.selection.RowModel',{
                             listeners:{
                                 selectionchange: function( scope, selected, eOpts ){

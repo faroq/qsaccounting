@@ -60,7 +60,7 @@ if (!defined('BASEPATH'))
                         stripeRows: true,
                         loadMask: true,
                         stateful:true,
-                        stateId:'stateGrid',
+                        stateId:'stateGridJAPH',
                         selType: 'checkboxmodel'
                         ,columns:[
                             {
@@ -132,7 +132,7 @@ if (!defined('BASEPATH'))
                         stripeRows: true,
                         loadMask: true,
                         stateful:true,
-                        stateId:'stateGrid',
+                        stateId:'stateGridJAPD',
                         split:true,
                         collapsible: true,
                         collapsed:true,

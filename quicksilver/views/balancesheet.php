@@ -71,7 +71,7 @@ if (!defined('BASEPATH'))
                         //                        stripeRows: true,
                         loadMask: true,
                         stateful:true,
-                        stateId:'stateGrid',
+                        stateId:'stateGridBL',
                         columnLines:true,
                         columns:[
                             {

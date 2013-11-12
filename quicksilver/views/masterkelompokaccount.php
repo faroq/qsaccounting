@@ -259,7 +259,7 @@ if (!defined('BASEPATH'))
                         xtype:'grid',
                         id:'mst_account_kel_grid',
                         stateful:true,
-                        stateId:'stateGrid',
+                        stateId:'stateGridMKEL',
                         store: mst_account_kel_store,//Ext.data.StoreManager.lookup('mst_account_kel_store'),
                         stripeRows: true,
                         loadMask: true,

@@ -65,7 +65,7 @@ if (!defined('BASEPATH'))
                         stripeRows: true,
                         loadMask: true,
                         stateful:true,
-                        stateId:'stateGrid',
+                        stateId:'stateGridIS',
                         columns:[
                             {
                                 text: 'Jenis',
@@ -74,7 +74,7 @@ if (!defined('BASEPATH'))
                                 //                                flex:1,
                                 width: 80
                             },{
-                                text: 'Jenis',
+                                text: 'nama_jenis',
                                 dataIndex: 'nama_jenis',
                                 sortable: false,
                                 //                                locked: true,

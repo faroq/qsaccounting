@@ -344,7 +344,7 @@ if (!defined('BASEPATH'))
                         xtype:'grid',
                         id:'gridid',
                         stateful:true,
-                        stateId:'stateGrid',
+                        stateId:'stateGridMACC',
                         store: MasterAccountStore,//Ext.data.StoreManager.lookup('mMasterAccountStore'),
                         stripeRows: true,
                         loadMask: true,

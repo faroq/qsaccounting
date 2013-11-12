@@ -315,7 +315,7 @@ if (!defined('BASEPATH'))
                         xtype:'grid',
                         id:'mp_biaya_grid',
                         stateful:true,
-                        stateId:'stateGrid',
+                        stateId:'stateGridMPOSBI',
                         store: mp_biaya_store,//Ext.data.StoreManager.lookup('acc_master_posting_store'),
                         stripeRows: true,
                         loadMask: true,
