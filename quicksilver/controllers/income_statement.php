@@ -203,7 +203,8 @@ class income_statement extends MY_Controller {
         //echo json_encode($result);
         $pdf->create_pdf($this->getthbl($thbl), json_encode($result));
         //$pdf->Output('myPdf.pdf','F');
-        $pdf->Output();
+//        $pdf->Output();
+        $pdf->Output('incsprint','I');
     }
 }
 
