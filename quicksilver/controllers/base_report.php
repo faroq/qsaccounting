@@ -27,8 +27,8 @@ class base_report extends MY_Controller {
             array_push($param, $value->value);
         }
         $spname = 'sp_generalledger';
-        $result = $this->bm->SP_getData($spname, $param);
-
+        $result = $this->bm->SP_getData($spname, $param);      
+//        echo '{success:true,record:1,data:[]}';
         echo $result;
     }
 
@@ -260,7 +260,9 @@ class base_report extends MY_Controller {
         //$pdf->AddPage();
         $pdf->create_pdf($this->getthbl($thbl), json_encode($result));
         //$pdf->Output('myPdf.pdf','F');
-        $pdf->Output();
+//        $pdf->Output();
+        $pdf->Output("tbprint","I");
+        
     }
 
 
@@ -288,7 +290,7 @@ class base_report extends MY_Controller {
         $filter1 = '';
         $filter2 = '';
         if ($param[0] == 'bln')
-            $filter1 = 'Bulan : '.getthbl($param[2]);
+            $filter1 = 'Bulan : '.$this->getthbl($param[2]);
         else
             $filter1 = 'Tanggal : '.$param[3].' s/d '.$param[4];
 
@@ -300,7 +302,8 @@ class base_report extends MY_Controller {
         $pdf->SetFont('Arial','',14);
         $pdf->AddPage('L');
         $pdf->create_pdf($filter1, $filter2, $result);
-        $pdf->Output();
+        $pdf->Output("glprint","I");
+//        $pdf->Output();
     }
 }
 
