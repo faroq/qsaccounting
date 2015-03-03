@@ -296,7 +296,8 @@ class balance_sheet extends MY_Controller {
         $pdf->SetFont('Arial','',14);
         $pdf->AddPage('L');
         $pdf->create_pdf($this->getthbl($thbl), json_encode($result));
-        $pdf->Output();
+        $pdf->Output("bsprint","I");
+//        $pdf->Output();
     }
 }
 
